@@ -23,7 +23,7 @@ char **tokenize_args(char *input_b, char *delim, int argc)
 
 	for (s = input_b, i = 0; ; s = NULL, i++)
 	{
-		token = strtok(s, delim);
+		token = _str_tok(s, delim);
 		if (token)
 			arg_list[i] = token, printf("Token not ull, i:%d argc: %d\n", i, argc);
 		else
@@ -41,14 +41,16 @@ char **tokenize_args(char *input_b, char *delim, int argc)
  * @input_b: argument count
  * @delim: delimiter
  * @token_list: ptr to ptr of  type token_list_t
+ * @list_s: ptr to ptr of  type token_list_t
  * Return: char ** | NULL, list of tokens
  * Description: This mutates *token_list, not a pure function
  * it aso returns a malloc'd array, remeber to free
  */
-char **tokenize_tl(char *input_b, char *delim, token_list_t **token_list)
+char **tokenize_tl(char *input_b, char *delim,
+	token_list_t **token_list, int *l_size)
 {
 	token_list_t *node = NULL, *iter = NULL;
-	char *str, *token, **arr;
+	char *str = NULL, *token = NULL, **arr = NULL;
 	size_t size, index;
 
 	if (!input_b || !token_list)
@@ -56,7 +58,7 @@ char **tokenize_tl(char *input_b, char *delim, token_list_t **token_list)
 	/* creat struct list */
 	for (str = input_b, size = 0; ; str = NULL)
 	{
-		token = strtok(str, delim);
+		token = _str_tok(str, delim);
 		if (!token)
 			break;
 		/* implement type/fleag checking for each token later */
@@ -82,7 +84,10 @@ char **tokenize_tl(char *input_b, char *delim, token_list_t **token_list)
 			arr[index] = iter->token;
 			iter = iter->next;
 		}
-
+		/* update list size */
+		*l_size = size;
+		/* free */
+		free_list(token_list);
 	}
 
 	return (arr);

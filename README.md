@@ -11,7 +11,7 @@ Recreating a simpler version of the popular bash shell `/bin/sh`
 
 ## Compiling
 
-- To run the program : `gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c ./which/*.c ./utils/*.c ./token/*.c -o myshell`
+- To run the program : `gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c ./which/*.c ./utils/*.c ./token/*.c ./exit/*.c ./env/*.c -o myshell`
 
 ## Testing
 
@@ -23,3 +23,6 @@ To test the functions in each program use:
 
 All compiled specific test programs can be run with valgrind to test for leaks e.g:
 `valgrind ./test_which`
+
+You can also run the shell program with valgrind to check for memory leaks
+`valgrind --leak-check=full --show-leak-kinds=all ./myshell`

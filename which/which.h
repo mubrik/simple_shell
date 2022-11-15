@@ -31,7 +31,6 @@ typedef struct which_list
 } which_list_t;
 
 /* functions */
-char *_getenv(char *name);
 void free_list_wl(which_list_t *head);
 which_list_t *tokenize_wl(char *input_b, char *pathname,
 	char *delim, which_list_t **path_list);

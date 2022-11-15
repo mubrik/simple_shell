@@ -35,7 +35,8 @@ typedef struct token_list
 /* functions */
 token_list_t *add_node(token_list_t **head, char *str, token_flag_t flag);
 token_list_t *add_node_end(token_list_t **head, char *str, token_flag_t flag);
-char **tokenize_tl(char *input_b, char *delim, token_list_t **token_list);
+char **tokenize_tl(char *input_b, char *delim,
+	token_list_t **token_list, int *l_size);
 void free_list(token_list_t **head);
 char **tokenize_args(char *input_b, char *delim, int argc);
 

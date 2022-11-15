@@ -21,3 +21,20 @@ int _memcpy(const char *src, char *dest)
 
 	return (1);
 }
+
+/**
+	* lst_size - gets the size of a list
+	* @arr: buffer ptr
+	* Return: -1 on error, size in int
+	*/
+int lst_size(char **arr)
+{
+	int index = 0;
+
+	if (!arr)
+		return (-1);
+	while (arr[index])
+		index++;
+
+	return (index);
+}

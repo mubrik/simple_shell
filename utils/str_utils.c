@@ -62,7 +62,7 @@ char *_strconcat(const char *src, const char *add_str)
 }
 
 /**
-	* _strconcatv - concats two string, malloc'd, variadic
+	* _strconcatv - concats multiple strings, malloc'd, variadic
 	* @src: str buffer
 	* @count: count of args
 	* Return: ptr to malloc'd string

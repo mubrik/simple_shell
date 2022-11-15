@@ -14,6 +14,26 @@ ssize_t get_input(char *buffer, u_long *n_bytes)
 }
 
 /**
+ * read_input - prits a '$' to the terminal and stores the line into the buffer
+ * @fd: file descriptor to read from
+ * @buffer: buffer to tore string
+ * @n_bytes: ptr to number of bytes written
+ * Return: int, number of bytes stored
+ */
+ssize_t read_input(int fd, char *buffer, size_t n_bytes)
+{
+	int byte_r;
+
+	/* write $ */
+	write(1, "$ ", 2);
+	byte_r = read(fd, buffer, n_bytes);
+	if (byte_r <= 0) /* 0 == EOF */
+		return (-1);
+	buffer[byte_r] = '\0';
+	return (byte_r);
+}
+
+/**
  * set_buffers - alloc default space required for buffers
  * @input_b: argument count
  * Return: 1 if buffesr set, 0 otherwise
@@ -69,44 +89,41 @@ int exec_cmd(char *path, char **args, char **env)
  */
 int main(int argc, char *argv[], char *env[])
 {
-	int n_read, __attribute_maybe_unused__ mode;
+	int n_read, i_argc = 0, ex_code = 0;
 	/* buffers */
 	buf inp_b = NULL, *arg_list = NULL;
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
-	which_list_t *path_list = NULL;
 	/* non interactive mode */
 	if (argc > 1)
 	{
-		mode = NONINT, arg_list = filter_argv(argv, argc);
+		arg_list = filter_argv(argv, argc);
 		if (!arg_list)
 			return (-1);
-		printf("Arg count %d\n, first Arg: %s\n", argc, arg_list[1]);
-		path_list = _which(arg_list[1]);
-		if (!path_list)
-			perror(arg_list[0]), perror(": No such file or directory");
+		if (is_builtin(arg_list[0]))
+			ex_code = handle_bin(argc - 1, &arg_list, env);
 		else
-			exec_cmd(path_list->path, arg_list, env), free_list_wl(path_list);
+			ex_code = handle_ext(argc - 1, &arg_list, env);
+		handle_p_exit(ex_code, argv[0], argc - 1, arg_list, env), free(arg_list);
+		return (0);
 	}
-	else /* interactive */
+	/* interactive */
+	if (!set_buffers(&inp_b)) /* chck */
+		return (-1);
+	while ((n_read = read_input(STDIN_FILENO, inp_b, inp_bytes)) != -1)
 	{
-		if (!set_buffers(&inp_b)) /* chck */
-			return (-1);
-		while ((n_read = get_input(inp_b, &inp_bytes)) != -1)
+		printf("buffer %s\n", inp_b);
+		arg_list = tokenize_tl(inp_b, " \n", &token_list, &i_argc);
+		if (arg_list)
 		{
-			mode = INT, printf("buffer %s\n", inp_b);
-			arg_list = tokenize_tl(inp_b, " \n", &token_list);
-			if (arg_list)
-			{
-				path_list = _which(arg_list[0]);
-				if (!path_list)
-					perror("No such file or directory");
-				else
-					exec_cmd(path_list->path, arg_list, env), free_list_wl(path_list);
-				free_list(&token_list), free(arg_list);
-			}
+			printf("first arg %s\n", arg_list[0]);
+			if (is_builtin(arg_list[0]))
+				ex_code = handle_bin(i_argc, &arg_list, env);
+			else
+				ex_code = handle_ext(i_argc, &arg_list, env);
+			handle_p_exit(ex_code, argv[0], i_argc, arg_list, env), free(arg_list);
 		}
-		free(inp_b);
 	}
-	return (0);
+	free(inp_b);
+	return (ex_code);
 }

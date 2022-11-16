@@ -24,7 +24,7 @@ char *_which(char *command)
 		if (!pathname)
 			break;
 		/* concat '/' then command */
-		f_path = _strconcatv(pathname, 2, "/", command);
+		f_path = _strconcatd(pathname, "/", command);
 		/* check if path + cmd is correct */
 		if (stat(f_path, &f_info) == -1)
 			free(f_path), f_path = NULL; /* f_path is malloc'd */

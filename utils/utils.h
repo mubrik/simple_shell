@@ -43,7 +43,8 @@ int _strcmp(const char *s1_ptr, const char *s2_ptr);
 char *_strcpy(char *dest, char *src);
 char *_strdup(const char *src);
 char *_strconcat(const char *src, const char *add_str);
-char *_strconcatv(const char *src, unsigned int count, ...);
+/* char *_strconcatv(const char *src, unsigned int count, ...); */
+char *_strconcatd(const char *src, const char *adda, const char *addb);
 char *_strchr(char *str_ptr, char c);
 char *_strtok(char *str, char *delim);
 

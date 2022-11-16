@@ -101,7 +101,7 @@ int _setenv(char *name, char *value, int overwrite)
 		return (BNF);
 	new_env[env_s] = NULL; /* add null byte to end */
 	/* new value */
-	var = _strconcatv(name, 2, "=", value);
+	var = _strconcatd(name, "=", value);
 	if (!var)
 	{
 		free(new_env);

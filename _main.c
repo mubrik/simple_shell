@@ -109,6 +109,8 @@ int main(int argc, char *argv[])
 				ex_code = handle_ext(i_argc, &arg_list);
 			handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
 		}
+		if (!isatty(STDIN_FILENO))
+			break;
 	}
 	return (ex_code);
 }

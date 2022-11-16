@@ -7,16 +7,18 @@
  */
 int main(void)
 {
-	char str[] = "l  \nls\n  -la\n k jj kk ll \n b\nbB;\t", *new, *prin;
+	char str[] = "hello world";
+	/* char str[] = "l  \nls\n  -la\n k jj kk ll \n b\nbB;\t", *new, *prin; */
 
-	for (new = str; ; new = NULL)
+	/* for (new = str; ; new = NULL)
 	{
 		prin = _str_tok(new, " \n");
 		if (!prin)
 			break;
 		printf("%s\n", prin);
-	}
-
+	} */
+	printf("%s \n", _strconcatd(str, "=", "moree"));
+	printf("%s \n", _strconcatd("str", "=dssfsdfew!@#$^&*", str));
 	/* printf("orig strlen: %ld\n", strlen(str) ? strlen(str) : 0);
 	printf("My strlen: %d\n", _strlen(str) ? _strlen(str) : 0);
 	printf("orig dup: %s\n", strdup(str));

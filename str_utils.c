@@ -62,41 +62,28 @@ char *_strconcat(const char *src, const char *add_str)
 }
 
 /**
-	* _strconcatv - concats multiple strings, malloc'd, variadic
+	* _strconcatd - concats 3 strings, malloc'd, i feel dumb making this.
 	* @src: str buffer
-	* @count: count of args
+	* @adda: str buffer
+	* @addb: str buffer
 	* Return: ptr to malloc'd string
+	* Description: only made this cause i cant use variadic variation
+	* very annoying requiremnet.
 	*/
-char *_strconcatv(const char *src, unsigned int count, ...)
+char *_strconcatd(const char *src, const char *adda, const char *addb)
 {
-	unsigned int i;
-	char *prev = NULL, *next = NULL, *arg = NULL;
-	va_list list;
-	/* check */
-	if (!src)
-		return (NULL);
-	/* copy  */
-	prev = _strdup(src);
-	/* init */
-	va_start(list, count);
-	/* iterate */
-	for (i = 0; i < count; i++)
-	{
-		/* get arg */
-		arg = va_arg(list, char *);
-		if (!arg)
-			break;
-		/* concat arg with prev strig */
-		next = _strconcat(prev, arg); /* malloc'd */
-		if (!next)
-			return (NULL); /* check */
-		if (prev)
-			free(prev); /* free prev malloc'd string */
-		prev = next; /* copy new ptr to prev */
-	}
+	unsigned int len1, len2, len3;
 
-	va_end(list);
-	return (next);
+	char *new = malloc((len1 = _strlen(src)) +
+		(len2 = _strlen(adda)) + (len3 = _strlen(addb)) + 1);
+
+	if (new)
+	{
+		_memcpy(src, new), _memcpy(adda, &new[len1]);
+		_memcpy(addb, &new[len1 + len2]);
+		new[len1 + len2 + len3] = '\0';
+	}
+	return (new);
 }
 
 /**

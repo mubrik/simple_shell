@@ -1,10 +1,11 @@
 #ifndef UTIL_H
 #define UTIL_H /* UTIL_H */
 
-#include <stdlib.h>
-#include <stdarg.h>
 #include <unistd.h>
 #include <stdio.h>
+/* #include <string.h> */
+#include <stdlib.h>
+#include <sys/wait.h>
 
 /* print buffer size */
 #define P_BUFF_SIZE 1024

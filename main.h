@@ -2,20 +2,12 @@
 #define MAIN_h /* MAIN_h */
 
 /* start */
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdarg.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-/* custom */
 #include "./utils/utils.h"
 #include "./token/token.h"
 #include "./which/which.h"
 #include "./exit/exit.h"
 #include "./env/env.h"
+
 /* macros */
 #define IN_BUFF_SIZE 1024
 
@@ -28,8 +20,8 @@ Bin_handler (*get_b_in(char *name));
 typedef char *buf;
 /**
  * struct builtin_op - struct holding built in name and func handler
- * @name: bbuitin name
- * @func: pointer to func handler
+ * @name: buitin name
+ * @func: func
  */
 typedef struct builtin_op
 {

@@ -2,9 +2,6 @@
 #define TOKEN_H /* TOKEN_H */
 
 /* start */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../utils/utils.h"
 
 /* typedef for token list flag enum */

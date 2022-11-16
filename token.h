@@ -2,7 +2,7 @@
 #define TOKEN_H /* TOKEN_H */
 
 /* start */
-#include "../utils/utils.h"
+#include "utils.h"
 
 /* typedef for token list flag enum */
 /**

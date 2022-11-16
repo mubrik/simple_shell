@@ -2,7 +2,7 @@
 #define WHICH_H /* WHICH_H */
 
 /* start */
-#include "../utils/utils.h"
+#include "utils.h"
 
 /* macros */
 /**

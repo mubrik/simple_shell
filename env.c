@@ -1,4 +1,4 @@
-#include "./env/env.h"
+#include "env.h"
 
 /**
  * bin_env - main function int argc, char *argv[], char *env[]

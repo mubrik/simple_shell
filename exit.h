@@ -2,8 +2,7 @@
 #define EXIT_H /* EXIT_H */
 
 /* start */
-#include "../utils/utils.h"
-#include <sys/stat.h>
+#include "utils.h"
 
 /* functions */
 int bin_exit(int argc, char *argv[]);

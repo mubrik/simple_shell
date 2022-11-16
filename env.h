@@ -2,7 +2,7 @@
 #define ENV_H /* ENV_H */
 
 /* start */
-#include "../utils/utils.h"
+#include "utils.h"
 
 /* functions */
 int bin_env(int argc, char *argv[]);

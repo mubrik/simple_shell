@@ -2,11 +2,11 @@
 #define MAIN_h /* MAIN_h */
 
 /* start */
-#include "./utils/utils.h"
-#include "./token/token.h"
-#include "./which/which.h"
-#include "./exit/exit.h"
-#include "./env/env.h"
+#include "utils.h"
+#include "token.h"
+#include "which.h"
+#include "exit.h"
+#include "env.h"
 
 /* macros */
 #define IN_BUFF_SIZE 1024

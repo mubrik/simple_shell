@@ -1,4 +1,4 @@
-#include "./which/which.h"
+#include "which.h"
 
 /**
  * _which - find the first valid command path, mallocd

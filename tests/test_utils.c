@@ -3,23 +3,23 @@
 #include <string.h>
 /**
  * main - tests the various functions in utils proram
- * Return void
+ * Return: void
  */
 int main(void)
 {
 	char str[] = "hello world";
-	/* char str[] = "l  \nls\n  -la\n k jj kk ll \n b\nbB;\t", *new, *prin; */
+	char stra[] = "l  \nls\n  -la\n k jj kk ll \n b\nbB;\t", *new, *prin;
 
-	/* for (new = str; ; new = NULL)
+	for (new = stra; ; new = NULL)
 	{
 		prin = _str_tok(new, " \n");
 		if (!prin)
 			break;
 		printf("%s\n", prin);
-	} */
+	}
 	printf("%s \n", _strconcatd(str, "=", "moree"));
 	printf("%s \n", _strconcatd("str", "=dssfsdfew!@#$^&*", str));
-	/* printf("orig strlen: %ld\n", strlen(str) ? strlen(str) : 0);
+	printf("orig strlen: %ld\n", strlen(str) ? strlen(str) : 0);
 	printf("My strlen: %d\n", _strlen(str) ? _strlen(str) : 0);
 	printf("orig dup: %s\n", strdup(str));
 	printf("My dup: %s\n", _strdup(str));
@@ -28,10 +28,6 @@ int main(void)
 	printf("orig strconcat: %s\n", strcat(strdup(str), "concat"));
 	printf("My strconcat: %s\n", _strconcat(_strdup(str), "concat"));
 	printf("orig strconcat len: %ld\n", strlen(strcat(strdup(str), "concat")));
-	printf("My strconcat len: %d\n", _strlen(_strconcat(_strdup(str), "concat"))); */
-	/* printf("%s\n", _strconcatv(str, 4, "first", "second", "third", "fourth"));
-	printf("%d\n", _strlen(_strconcatv(str, 4, "first", "second", "third", "fourth")));
-	printf("%ld\n", strlen(_strconcatv(str, 4, "first", "second", "third", "fourth")));
-	printf("Comma occured in 'j,kd,,,sl,,l,': %d times\n", _strocr(("j,kd,,,sl,,l,"), ',')); */
+	printf("My strconcat len: %d\n", _strlen(_strconcat(_strdup(str), "concat")));
 	return (0);
 }

@@ -1,5 +1,5 @@
-#ifndef MAIN_h
-#define MAIN_h /* MAIN_h */
+#ifndef MAIN_H
+#define MAIN_H /* MAIN_h */
 
 /* start */
 #include "utils.h"
@@ -38,14 +38,5 @@ int exec_cmd(char *path, char **args);
 int handle_ext(int argc, char **argv[]);
 int handle_bin(int argc, char **argv[]);
 int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[]);
-
-/**
- * is_builtin - checks if string is a built in arg
- * @s: ponter t string
- * Return: int
- */
-static inline int is_builtin(char *s)
-{ return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
-	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
 
 #endif /* MAIN_h */

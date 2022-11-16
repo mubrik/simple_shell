@@ -1,6 +1,15 @@
 #include "main.h"
 
 /**
+ * is_builtin - checks if string is a built in arg
+ * @s: ponter t string
+ * Return: int
+ */
+static inline int is_builtin(char *s)
+{ return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
+	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
+
+/**
  * read_input - prits a '$' to the terminal and stores the line into the buffer
  * @fd: file descriptor to read from
  * @buffer: buffer to tore string

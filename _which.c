@@ -1,6 +1,13 @@
 #include "which.h"
 
 /**
+ * is_path - checks if string is a pathname
+ * @s: ponter t string
+ * Return: int
+ */
+static inline int is_path(char *s) { return ((s[0] == '.') || (s[0] == '/')); }
+
+/**
  * _which - find the first valid command path, mallocd
  * @command: user command to find
  * Return: valid pathname or NULL

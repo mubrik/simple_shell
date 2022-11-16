@@ -1,4 +1,4 @@
-#include "exit.h"
+#include "./exit/exit.h"
 
 /**
  * bin_exit - main function int argc, char *argv[], char *env[]

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "./utils/utils.h"
 
 /**
  * _strocr - counts the amount of time a charcter occurs in a str, skips reocr

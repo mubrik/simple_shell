@@ -4,11 +4,9 @@
  * bin_exit - main function int argc, char *argv[], char *env[]
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int bin_exit(int __attribute_maybe_unused__ argc,
-	char __attribute_maybe_unused__ *argv[], char __attribute_maybe_unused__ *env[])
+int bin_exit(int argc, char *argv[])
 {
 	int ex_code;
 

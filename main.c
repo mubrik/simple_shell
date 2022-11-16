@@ -1,19 +1,6 @@
 #include "main.h"
 
 /**
- * get_input - prits a '$' to the terminal and stores the line into the buffer
- * @buffer: buffer to tore string
- * @n_bytes: ptr to number of bytes written
- * Return: int, number of bytes stored
- */
-ssize_t get_input(char *buffer, u_long *n_bytes)
-{
-	/* write $ */
-	write(1, "$ ", 2);
-	return (getline(&buffer, n_bytes, stdin));
-}
-
-/**
  * read_input - prits a '$' to the terminal and stores the line into the buffer
  * @fd: file descriptor to read from
  * @buffer: buffer to tore string
@@ -28,7 +15,13 @@ ssize_t read_input(int fd, char *buffer, size_t n_bytes)
 	write(1, "$ ", 2);
 	byte_r = read(fd, buffer, n_bytes);
 	if (byte_r <= 0) /* 0 == EOF */
+	{
+		/* frreing not necessary as app is exiting but doing it anyways */
+		if (is_env_change(0))
+			free_lst(environ), free(environ);
+		free(buffer);
 		return (-1);
+	}
 	buffer[byte_r] = '\0';
 	return (byte_r);
 }
@@ -50,44 +43,39 @@ int set_buffers(char **input_b)
  * exec_cmd - main function int argc, char *argv[], char *env[]
  * @path: argument count
  * @args: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int exec_cmd(char *path, char **args, char **env)
+int exec_cmd(char *path, char **args)
 {
 	int c_pid, c_status;
 	/* check */
-	if (!path || !args || !env)
+	if (!path || !args)
 	{
 		return (-1);
 	}
 	c_pid = fork();
 	if (c_pid == -1)
-		printf("error executing");
+		return (-1);
 	else if (c_pid > 0)
 	{
-		printf("waiting \n");
 		wait(&c_status);
-		printf("done waiting \n");
 		return (0);
 	}
 	else
 	{
-		execve(path, args, env);
-		/* printf("Path to execv: %s\n", path_list->path); */
+		execve(path, args, environ);
 	}
 
 	return (0);
 }
 
 /**
- * main - main function int argc, char *argv[], char *env[]
+ * main - main function int argc, char *argv[]
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int main(int argc, char *argv[], char *env[])
+int main(int argc, char *argv[])
 {
 	int n_read, i_argc = 0, ex_code = 0;
 	/* buffers */
@@ -101,10 +89,10 @@ int main(int argc, char *argv[], char *env[])
 		if (!arg_list)
 			return (-1);
 		if (is_builtin(arg_list[0]))
-			ex_code = handle_bin(argc - 1, &arg_list, env);
+			ex_code = handle_bin(argc - 1, &arg_list);
 		else
-			ex_code = handle_ext(argc - 1, &arg_list, env);
-		handle_p_exit(ex_code, argv[0], argc - 1, arg_list, env), free(arg_list);
+			ex_code = handle_ext(argc - 1, &arg_list);
+		handle_p_exit(ex_code, argv[0], argc - 1, arg_list), free(arg_list);
 		return (0);
 	}
 	/* interactive */
@@ -112,18 +100,15 @@ int main(int argc, char *argv[], char *env[])
 		return (-1);
 	while ((n_read = read_input(STDIN_FILENO, inp_b, inp_bytes)) != -1)
 	{
-		printf("buffer %s\n", inp_b);
 		arg_list = tokenize_tl(inp_b, " \n", &token_list, &i_argc);
 		if (arg_list)
 		{
-			printf("first arg %s\n", arg_list[0]);
 			if (is_builtin(arg_list[0]))
-				ex_code = handle_bin(i_argc, &arg_list, env);
+				ex_code = handle_bin(i_argc, &arg_list);
 			else
-				ex_code = handle_ext(i_argc, &arg_list, env);
-			handle_p_exit(ex_code, argv[0], i_argc, arg_list, env), free(arg_list);
+				ex_code = handle_ext(i_argc, &arg_list);
+			handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
 		}
 	}
-	free(inp_b);
 	return (ex_code);
 }

@@ -1,31 +1,42 @@
 #include "which.h"
 
 /**
- * _which - takes a pathname and sets a which_list_t
- * @pathname: ptr to name of file
- * Return: a which_list_t or NULL if not found
+ * _which - find the first valid command path, mallocd
+ * @command: user command to find
+ * Return: valid pathname or NULL
  */
-which_list_t *_which(char *pathname)
+char *_which(char *command)
 {
-	char *path = NULL;
-	which_list_t *path_list = NULL;
-	/* struct stat f_info; */
+	char *path = NULL, *pathname = NULL, *str = NULL, *f_path = NULL;
+	struct stat f_info;
 
-	if (!pathname)
-		return (path_list);
-	/* verify pathname */
-	if (is_path(pathname))
-		add_node_end_wl(&path_list, _strdup(pathname)), printf("valid");
-	else
+	if (!command)
+		return (NULL);
+	/* verify cmd is pathname */
+	if (is_path(command))
+		return (command);
+	path = _strdup(_getenv("PATH")); /* dup cause tokenization cuts orig */
+	if (!path)
+		return (NULL);
+	for (str = path; ; str = NULL)
 	{
-		path = _strdup(_getenv("PATH")); /* dup cause tokenization cuts orig */
-		if (!path)
-			return (NULL);
-		/* tokenize */
-		tokenize_wl(path, pathname, ":", &path_list);
+		pathname = _strtok(str, ":");
+		if (!pathname)
+			break;
+		/* concat '/' then command */
+		f_path = _strconcatv(pathname, 2, "/", command);
+		/* check if path + cmd is correct */
+		if (stat(f_path, &f_info) == -1)
+			free(f_path), f_path = NULL; /* f_path is malloc'd */
+		else
+		{
+			/* valid path found */
+			free(path);
+			return (f_path);
+		}
 	}
 
 	if (path)
 		free(path);
-	return (path_list);
+	return (f_path);
 }

@@ -9,8 +9,8 @@
 #include "../utils/utils.h"
 
 /* functions */
-int bin_env(int argc, char *argv[], char *env[]);
-int bin_setenv(int argc, char  *argv[], char *env[]);
-int bin_unsetenv(int argc, char *argv[], char *env[]);
+int bin_env(int argc, char *argv[]);
+int bin_setenv(int argc, char *argv[]);
+int bin_unsetenv(int argc, char *argv[]);
 
 #endif /* ENV_H */

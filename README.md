@@ -25,4 +25,4 @@ All compiled specific test programs can be run with valgrind to test for leaks e
 `valgrind ./test_which`
 
 You can also run the shell program with valgrind to check for memory leaks
-`valgrind --leak-check=full --show-leak-kinds=all ./myshell`
+`valgrind -s --leak-check=full --show-leak-kinds=all ./myshell`

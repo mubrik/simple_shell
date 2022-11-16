@@ -21,7 +21,7 @@
 
 /* stucts and typedef */
 /* This is a generic typedef for all the functions that handles commands */
-typedef int Bin_handler(int argc, char *argv[], char *env[]);
+typedef int Bin_handler(int argc, char *argv[]);
 /* built in getter func */
 Bin_handler (*get_b_in(char *name));
 /** buf - a buffer of type char *  */
@@ -37,32 +37,15 @@ typedef struct builtin_op
 	Bin_handler (*func);
 } builtin_op_t;
 
-/**
- * enum ex_flag - exit flags for bin or ext commands
- * @OK: ok
- * @CNF: command not found
- * @FNF: file not found
- * @BNF: Buffer not found
- * @ANV: Command arguments not valid
- */
-typedef enum ex_flag
-{
-	OK = 0,
-	CNF = 1 << 0,
-	FNF = 1 << 1,
-	BNF = 1 << 2,
-	ANV = 1 << 3
-} ex_flag_t;
 
 /* functions */
-ssize_t get_input(char *buffer, u_long *n_bytes);
+ssize_t read_input(int fd, char *buffer, size_t n_bytes);
 int set_buffers(char **input_b);
 char **filter_argv(char **argv, int argc);
-int exec_cmd(char *path, char **args, char **env);
-int handle_ext(int argc, char **argv[], char *env[]);
-int handle_bin(int argc, char **argv[], char *env[]);
-int handle_p_exit(int ex_flag, char *main_name,
-	int argc, char *arg_list[], char *env[]);
+int exec_cmd(char *path, char **args);
+int handle_ext(int argc, char **argv[]);
+int handle_bin(int argc, char **argv[]);
+int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[]);
 
 /**
  * is_builtin - checks if string is a built in arg

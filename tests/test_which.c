@@ -16,9 +16,9 @@ int main(void)
 	printf("mine: %s\n", _getenv("OLDPWD"));
   printf("orig: %s\n", getenv("GNOME_TERMINAL_SERVICE"));
 	printf("mine: %s\n", _getenv("GNOME_TERMINAL_SERVICE"));
-	_which("/path");
-	_which(".path");
-	_which("path");
-	_which("ls");
+	printf("%s is a valid path\n", _which("/path"));
+	printf("%s is a valid path\n", _which(".path"));
+	printf("%s is a valid path\n", _which("path"));
+	printf("%s is a valid path\n", _which("ls"));
 	return (0);
 }

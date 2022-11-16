@@ -9,6 +9,6 @@
 #include "../utils/utils.h"
 
 /* functions */
-int bin_exit(int argc, char *argv[], char *env[]);
+int bin_exit(int argc, char *argv[]);
 
 #endif /* EXIT_H */

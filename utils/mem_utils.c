@@ -38,3 +38,20 @@ int lst_size(char **arr)
 
 	return (index);
 }
+
+/**
+	* free_lst - frees a list of malloc'd pointers
+	* @arr: buffer ptr
+	* Return: -1 on error, size in int
+	*/
+int free_lst(char **arr)
+{
+	int index = 0;
+
+	if (!arr)
+		return (-1);
+	while (arr[index])
+		free(arr[index]), index++;
+
+	return (index);
+}

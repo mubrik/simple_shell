@@ -4,11 +4,10 @@
  * bin_env - main function int argc, char *argv[], char *env[]
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int bin_env(int __attribute_maybe_unused__ argc,
-	char __attribute_maybe_unused__ *argv[], char __attribute_maybe_unused__ *env[])
+int bin_env(__attribute_maybe_unused__ int argc,
+	__attribute_maybe_unused__ char *argv[])
 {
 	unsigned int i = 0;
 
@@ -24,40 +23,28 @@ int bin_env(int __attribute_maybe_unused__ argc,
  * bin_setenv - main function int argc, char *argv[], char *env[]
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int bin_setenv(int __attribute_maybe_unused__ argc,
-	char __attribute_maybe_unused__ *argv[], char __attribute_maybe_unused__ *env[])
+int bin_setenv(int argc, char *argv[])
 {
-	int res;
 
 	/* check */
 	if (argc < 3)
-		return (8);
-	res = _setenv(argv[1], argv[2], 1);
-	if (res != 0)
-		return (-1);
-	return (0);
+		return (ANV);
+	return (_setenv(argv[1], argv[2], 1));
 }
 
 /**
  * bin_unsetenv - main function int argc, char *argv[], char *env[]
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: int
  */
-int bin_unsetenv(int __attribute_maybe_unused__ argc,
-	char __attribute_maybe_unused__ *argv[], char __attribute_maybe_unused__ *env[])
+int bin_unsetenv(int argc, char *argv[])
 {
-	int res;
 
 	/* check */
 	if (argc < 2)
-		return (8);
-	res = _unsetenv(argv[1]);
-	if (res != 0)
-		return (-1);
-	return (0);
+		return (ANV);
+	return (_unsetenv(argv[1]));
 }

@@ -87,7 +87,7 @@ char *_strchr(char *str_ptr, char c)
  * Return: pointer if located, NULL else
  * Description: custom of builtin strtok, same requirements, buffer then NULL
  */
-char *_str_tok(char *str, char *delim)
+char *_strtok(char *str, char *delim)
 {
 	int i, first_f = 0;
 	static char *p_stor;
@@ -120,7 +120,7 @@ char *_str_tok(char *str, char *delim)
 }
 
 /**
- * atoi_m - function that converts a string to an integer
+ * _atoi - function that converts a string to an integer
  * @s: string in question
  * Return: integer
  */

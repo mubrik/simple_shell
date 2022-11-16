@@ -38,7 +38,7 @@ char **filter_argv(char **argv, int argc)
  * @name: name of the builtin
  * Return: a pointer to builtin_op_t
  */
-int (*get_b_in(char *name))(int argc, char *argv[], char *env[])
+int (*get_b_in(char *name))(int argc, char *argv[])
 {
 	int i;
 
@@ -62,41 +62,39 @@ int (*get_b_in(char *name))(int argc, char *argv[], char *env[])
  * handle_bin - handles a builtin command process
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: 0 on succss
  */
-int handle_bin(int argc, char **argv[], char *env[])
+int handle_bin(int argc, char **argv[])
 {
 	Bin_handler *handler;
 	char **arg_list = *argv;
 	/* check */
-	if (!arg_list || !env)
+	if (!arg_list)
 		return (BNF);
 	/* get bin handler */
 	handler = get_b_in(arg_list[0]);
 	if (!handler)
 		return (CNF);
-	return (handler(argc, arg_list, env));
+	return (handler(argc, arg_list));
 }
 
 /**
  * handle_ext - handles an ext command process
  * @argc: argument count
  * @argv: array of char argument values
- * @env: array of char environment variables
  * Return: 0 on succss
  */
-int handle_ext(__attribute_maybe_unused__ int argc, char **argv[], char *env[])
+int handle_ext(__attribute_maybe_unused__ int argc, char **argv[])
 {
-	which_list_t *path_list = NULL;
+	char *path = NULL;
 	char **arg_list = *argv;
 	/* check */
-	if (!arg_list || !env)
+	if (!arg_list)
 		return (BNF);
-	path_list = _which(arg_list[0]);
-	if (!path_list)
+	path = _which(arg_list[0]);
+	if (!path)
 		return (CNF);
-	exec_cmd(path_list->path, arg_list, env), free_list_wl(path_list);
+	exec_cmd(path, arg_list), free(path);
 	return (0);
 }
 
@@ -106,25 +104,29 @@ int handle_ext(__attribute_maybe_unused__ int argc, char **argv[], char *env[])
  * @main_name: the main program name
  * @argc: the arg_list count
  * @arg_list: the arg_list
- * @env: the env
  * Return: 0 on succss
  */
 int handle_p_exit(int ex_flag, __attribute_maybe_unused__ char *main_name,
-	__attribute_maybe_unused__ int argc, __attribute_maybe_unused__ char *arg_list[],
-	__attribute_maybe_unused__ char *env[])
+	int argc, char *arg_list[])
 {
-	printf("ex flag: %d\n", ex_flag);
-	if (!ex_flag)
-		return (0);
+	if (ex_flag < 0 || !ex_flag)
+		return (ex_flag);
+
 	switch (ex_flag)
 	{
 		case CNF:
-			_print("No such file or directory\n", STDERR_FILENO);
+			if (argc > 0)
+				_print(arg_list[0], STDERR_FILENO), _print(": ", STDERR_FILENO);
+			_print("Command not Found\n", STDERR_FILENO);
 			return (0);
 		case ANV:
+			if (argc >= 1)
+				_print(arg_list[1], STDERR_FILENO), _print(": ", STDERR_FILENO);
 			_print("Argument not valid\n", STDERR_FILENO);
 			return (0);
-		case FNF :
+		case FNF:
+			if (argc > 0)
+				_print(arg_list[0], STDERR_FILENO), _print(": ", STDERR_FILENO);
 			_print("No such file or directory\n", STDERR_FILENO);
 			return (0);
 		case BNF:

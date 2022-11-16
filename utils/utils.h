@@ -3,9 +3,9 @@
 
 #include <unistd.h>
 #include <stdio.h>
-/* #include <string.h> */
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 /* print buffer size */
 #define P_BUFF_SIZE 1024

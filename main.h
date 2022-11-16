@@ -26,7 +26,7 @@ typedef char *buf;
 typedef struct builtin_op
 {
 	char *name;
-	Bin_handler (*func);
+	Bin_handler *func;
 } builtin_op_t;
 
 
@@ -47,7 +47,5 @@ int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[]);
 static inline int is_builtin(char *s)
 { return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
 	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
-
-
 
 #endif /* MAIN_h */

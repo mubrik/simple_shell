@@ -24,7 +24,6 @@ ssize_t read_input(int __attribute__((unused)) fd, char **buffer, size_t *n_byte
 		return (-1);
 	}
 	/* *buffer[byte_r] = '\0'; */
-	printf("buff %s\n", *buffer);
 	return (byte_r);
 }
 

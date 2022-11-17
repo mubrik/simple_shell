@@ -21,7 +21,7 @@ ssize_t read_input(int fd, char *buffer, size_t n_bytes)
 	int byte_r;
 
 	/* write $ */
-	write(1, "$ ", 2);
+	write(1, "#cisfun$ ", 9);
 	byte_r = read(fd, buffer, n_bytes);
 	if (byte_r <= 0) /* 0 == EOF */
 	{

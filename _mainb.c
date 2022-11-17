@@ -116,8 +116,8 @@ int handle_p_exit(int ex_flag, __attribute__((unused)) char *main_name,
 	{
 		case CNF:
 			if (argc > 0)
-				_print(arg_list[0], STDERR_FILENO), _print(": ", STDERR_FILENO);
-			_print("Command not Found\n", STDERR_FILENO);
+				_print(main_name, STDERR_FILENO), _print(": ", STDERR_FILENO);
+			_print("No such file or directory\n", STDERR_FILENO);
 			return (0);
 		case ANV:
 			if (argc >= 1)
@@ -126,7 +126,7 @@ int handle_p_exit(int ex_flag, __attribute__((unused)) char *main_name,
 			return (0);
 		case FNF:
 			if (argc > 0)
-				_print(arg_list[0], STDERR_FILENO), _print(": ", STDERR_FILENO);
+				_print(main_name, STDERR_FILENO), _print(": ", STDERR_FILENO);
 			_print("No such file or directory\n", STDERR_FILENO);
 			return (0);
 		case BNF:

@@ -7,14 +7,14 @@
  * @n_bytes: ptr to number of bytes written
  * Return: int, number of bytes stored
  */
-ssize_t read_input(int __attribute__((unused)) fd, char **buffer, size_t *n_bytes)
+ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
 {
 	int byte_r;
 	/* write $ */
-	if (isatty(STDIN_FILENO))
-		write(1, "#cisfun$ ", 9);
-	/* byte_r = read(fd, buffer, n_bytes); */
-	byte_r = getline(buffer, n_bytes, stdin);
+	/* if (isatty(STDIN_FILENO)) */
+		/* write(1, "#cisfun$ ", 9); */
+	byte_r = read(fd, *buffer, *n_bytes);
+	/* byte_r = getline(buffer, n_bytes, stdin); */
 	if (byte_r <= 0) /* 0 == EOF */
 	{
 		/* frreing not necessary as app is exiting but doing it anyways */
@@ -23,7 +23,7 @@ ssize_t read_input(int __attribute__((unused)) fd, char **buffer, size_t *n_byte
 		free(*buffer);
 		return (-1);
 	}
-	/* *buffer[byte_r] = '\0'; */
+	(*buffer)[byte_r] = '\0';
 	return (byte_r);
 }
 

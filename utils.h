@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
 
 /* print buffer size */
 #define P_BUFF_SIZE 1024

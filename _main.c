@@ -11,7 +11,7 @@ ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
 {
 	int byte_r;
 	/* write $ */
-	fflush(stdout);
+	fflush(stdout), fflush(stderr);
 	if (isatty(STDIN_FILENO))
 		write(1, "#cisfun$ ", 9);
 	byte_r = read(fd, *buffer, *n_bytes);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 			return (-1);
 		ex_code = handle_cmd_type(argc - 1, &arg_list);
 		handle_p_exit(ex_code, argv[0], argc - 1, arg_list), free(arg_list);
-		return (0);
+		return (ex_code);
 	}
 	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);

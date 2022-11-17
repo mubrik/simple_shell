@@ -11,8 +11,9 @@ ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
 {
 	int byte_r;
 	/* write $ */
-	/* if (isatty(STDIN_FILENO)) */
-		/* write(1, "#cisfun$ ", 9); */
+	fflush(stdout);
+	if (isatty(STDIN_FILENO))
+		write(1, "#cisfun$ ", 9);
 	byte_r = read(fd, *buffer, *n_bytes);
 	/* byte_r = getline(buffer, n_bytes, stdin); */
 	if (byte_r <= 0) /* 0 == EOF */
@@ -59,8 +60,10 @@ int exec_cmd(char *path, char **args)
 		return (-1);
 	else if (c_pid > 0)
 	{
-		wait(&c_status);
-		return (0);
+		do {
+			waitpid(c_pid, &c_status, WUNTRACED); /* man 2 waitpid */
+		} while (!WIFEXITED(c_status)
+			&& !WIFSIGNALED(c_status) && !WIFSTOPPED(c_status));
 	}
 	else
 	{

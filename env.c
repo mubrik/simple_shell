@@ -6,11 +6,11 @@
  * @argv: array of char argument values
  * Return: int
  */
-int bin_env(__attribute_maybe_unused__ int argc,
-	__attribute_maybe_unused__ char *argv[])
+int bin_env(int argc, __attribute__((unused)) char *argv[])
 {
 	unsigned int i = 0;
-
+	if (argc < 0)
+		return (INV);
 	for (i = 0; environ[i]; i++)
 	{
 		_print(environ[i], _STDIO_H), _print("\n", _STDIO_H);

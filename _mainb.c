@@ -84,7 +84,7 @@ int handle_bin(int argc, char **argv[])
  * @argv: array of char argument values
  * Return: 0 on succss
  */
-int handle_ext(__attribute_maybe_unused__ int argc, char **argv[])
+int handle_ext(__attribute__((unused)) int argc, char **argv[])
 {
 	char *path = NULL;
 	char **arg_list = *argv;
@@ -106,7 +106,7 @@ int handle_ext(__attribute_maybe_unused__ int argc, char **argv[])
  * @arg_list: the arg_list
  * Return: 0 on succss
  */
-int handle_p_exit(int ex_flag, __attribute_maybe_unused__ char *main_name,
+int handle_p_exit(int ex_flag, __attribute__((unused)) char *main_name,
 	int argc, char *arg_list[])
 {
 	if (ex_flag < 0 || !ex_flag)

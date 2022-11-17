@@ -7,22 +7,24 @@
  * @n_bytes: ptr to number of bytes written
  * Return: int, number of bytes stored
  */
-ssize_t read_input(int fd, char *buffer, size_t n_bytes)
+ssize_t read_input(int __attribute__((unused)) fd, char **buffer, size_t *n_bytes)
 {
 	int byte_r;
 	/* write $ */
 	if (isatty(STDIN_FILENO))
 		write(1, "#cisfun$ ", 9);
-	byte_r = read(fd, buffer, n_bytes);
+	/* byte_r = read(fd, buffer, n_bytes); */
+	byte_r = getline(buffer, n_bytes, stdin);
 	if (byte_r <= 0) /* 0 == EOF */
 	{
 		/* frreing not necessary as app is exiting but doing it anyways */
 		if (is_env_change(0))
 			free_lst(environ), free(environ);
-		free(buffer);
+		free(*buffer);
 		return (-1);
 	}
-	buffer[byte_r] = '\0';
+	/* *buffer[byte_r] = '\0'; */
+	printf("buff %s\n", *buffer);
 	return (byte_r);
 }
 
@@ -93,7 +95,7 @@ int main(int argc, char *argv[])
 	}
 	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);
-	while ((n_read = read_input(STDIN_FILENO, inp_b, inp_bytes)) != -1)
+	while ((n_read = read_input(STDIN_FILENO, &inp_b, &inp_bytes)) != -1)
 	{
 		for (tmp_b = inp_b; ; tmp_b = NULL)
 		{

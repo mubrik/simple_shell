@@ -1,15 +1,6 @@
 #include "main.h"
 
 /**
- * is_builtin - checks if string is a built in arg
- * @s: ponter t string
- * Return: int
- */
-static inline int is_builtin(char *s)
-{ return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
-	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
-
-/**
  * read_input - prits a '$' to the terminal and stores the line into the buffer
  * @fd: file descriptor to read from
  * @buffer: buffer to tore string
@@ -19,9 +10,9 @@ static inline int is_builtin(char *s)
 ssize_t read_input(int fd, char *buffer, size_t n_bytes)
 {
 	int byte_r;
-
 	/* write $ */
-	write(1, "#cisfun$ ", 9);
+	if (isatty(STDIN_FILENO))
+		write(1, "#cisfun$ ", 9);
 	byte_r = read(fd, buffer, n_bytes);
 	if (byte_r <= 0) /* 0 == EOF */
 	{
@@ -87,8 +78,7 @@ int exec_cmd(char *path, char **args)
 int main(int argc, char *argv[])
 {
 	int n_read, i_argc = 0, ex_code = 0;
-	/* buffers */
-	buf inp_b = NULL, *arg_list = NULL;
+	buf inp_b = NULL, *arg_list = NULL, tmp_b = NULL, cmd_b = NULL, tok_r = NULL;
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
 	/* non interactive mode */
@@ -97,29 +87,53 @@ int main(int argc, char *argv[])
 		arg_list = filter_argv(argv, argc);
 		if (!arg_list)
 			return (-1);
-		if (is_builtin(arg_list[0]))
-			ex_code = handle_bin(argc - 1, &arg_list);
-		else
-			ex_code = handle_ext(argc - 1, &arg_list);
+		ex_code = handle_cmd_type(argc - 1, &arg_list);
 		handle_p_exit(ex_code, argv[0], argc - 1, arg_list), free(arg_list);
 		return (0);
 	}
-	/* interactive */
-	if (!set_buffers(&inp_b)) /* chck */
+	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);
 	while ((n_read = read_input(STDIN_FILENO, inp_b, inp_bytes)) != -1)
 	{
-		arg_list = tokenize_tl(inp_b, " \n", &token_list, &i_argc);
-		if (arg_list)
+		for (tmp_b = inp_b; ; tmp_b = NULL)
 		{
-			if (is_builtin(arg_list[0]))
-				ex_code = handle_bin(i_argc, &arg_list);
+			cmd_b = _strtok_r(tmp_b, "\n;", &tok_r);
+			if (cmd_b && (ex_code == 0))
+			{
+				arg_list = tokenize_tl(cmd_b, " \n", &token_list, &i_argc);
+				ex_code = handle_cmd_type(i_argc, &arg_list);
+				handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
+			}
 			else
-				ex_code = handle_ext(i_argc, &arg_list);
-			handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
+				break;
 		}
 		if (!isatty(STDIN_FILENO))
 			break;
+		ex_code = 0; /* going again, reset ex_code */
 	}
 	return (ex_code);
+}
+
+/**
+ * handle_cmd_type - a sub function to reduce main function line count
+ * @argc: argument count
+ * @argv: array of char argument values
+ * Return: int
+ */
+int handle_cmd_type(int argc, char ***argv)
+{
+	char **arg_list = NULL;
+
+	if (!argv)
+		return (-1);
+
+	arg_list = *argv;
+
+	if (!arg_list)
+		return (-1);
+
+	if (is_builtin(arg_list[0]))
+		return (handle_bin(argc, argv));
+	else
+		return (handle_ext(argc, argv));
 }

@@ -24,7 +24,6 @@ char *_strcpy(char *dest, char *src)
 	return (first);
 }
 
-
 /**
 	* _strlen - returns the length of a string.
 	* @src_ptr: str buffer

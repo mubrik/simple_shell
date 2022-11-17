@@ -10,6 +10,14 @@
 
 /* macros */
 #define IN_BUFF_SIZE 1024
+/**
+ * is_builtin - checks if string is a built in arg
+ * @s: ponter t string
+ * Return: int
+ */
+static inline int is_builtin(char *s)
+{ return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
+	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
 
 /* stucts and typedef */
 /* This is a generic typedef for all the functions that handles commands */
@@ -38,5 +46,6 @@ int exec_cmd(char *path, char **args);
 int handle_ext(int argc, char **argv[]);
 int handle_bin(int argc, char **argv[]);
 int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[]);
+int handle_cmd_type(int argc, char ***argv);
 
 #endif /* MAIN_h */

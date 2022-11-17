@@ -47,6 +47,7 @@ char *_strconcat(const char *src, const char *add_str);
 char *_strconcatd(const char *src, const char *adda, const char *addb);
 char *_strchr(char *str_ptr, char c);
 char *_strtok(char *str, char *delim);
+char *_strtok_r(char *str, char *delim, char **saveptr);
 
 /* list func */
 

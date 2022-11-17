@@ -55,6 +55,7 @@ char **tokenize_tl(char *input_b, char *delim,
 
 	if (!input_b || !token_list)
 		return (NULL);
+	/* printf("inp buffer: %s\n", input_b); */
 	/* creat struct list */
 	for (str = input_b, size = 0; ; str = NULL)
 	{

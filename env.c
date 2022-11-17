@@ -9,6 +9,7 @@
 int bin_env(int argc, __attribute__((unused)) char *argv[])
 {
 	unsigned int i = 0;
+
 	if (argc < 0)
 		return (INV);
 	for (i = 0; environ[i]; i++)

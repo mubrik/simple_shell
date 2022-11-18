@@ -12,7 +12,7 @@ ssize_t read_input(__attribute__((unused)) int fd, char **buffer, size_t *n_byte
 	int byte_r;
 	/* write $ */
 	fflush(stdout), fflush(stderr);
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO)) /* real interactive mode check */
 		write(1, "#cisfun$ ", 9);
 	/* byte_r = read(fd, *buffer, *n_bytes); */
 	byte_r = getline(buffer, n_bytes, stdin);
@@ -79,14 +79,14 @@ int exec_cmd(char *path, char **args)
  * @argv: array of char argument values
  * Return: int
  */
-int main(int argc, char *argv[])
+int main(__attribute__((unused)) int argc, char *argv[])
 {
 	int n_read, i_argc = 0, ex_code = 0;
 	buf inp_b = NULL, *arg_list = NULL, tmp_b = NULL, cmd_b = NULL, tok_r = NULL;
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
 	/* non interactive mode */
-	if (argc > 1)
+	/* if (argc > 1)
 	{
 		arg_list = filter_argv(argv, argc);
 		if (!arg_list)
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 		ex_code = handle_cmd_type(argc - 1, &arg_list);
 		handle_p_exit(ex_code, argv[0], argc - 1, arg_list), free(arg_list);
 		return (ex_code);
-	}
+	} */
 	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);
 	while ((n_read = read_input(STDIN_FILENO, &inp_b, &inp_bytes)) != -1)
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 			else
 				break;
 		}
-		if (!isatty(STDIN_FILENO))
+		if (!isatty(STDIN_FILENO)) /* non interactive mode check */
 			break;
 		ex_code = 0; /* going again, reset ex_code */
 	}

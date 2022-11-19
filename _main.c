@@ -52,9 +52,7 @@ int exec_cmd(char *path, char **args)
 	int c_pid, c_status;
 	/* check */
 	if (!path || !args)
-	{
 		return (-1);
-	}
 	c_pid = fork();
 	if (c_pid == -1)
 		return (-1);
@@ -104,7 +102,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 			cmd_b = _strtok_r(tmp_b, "\n;", &tok_r);
 			if (cmd_b && (ex_code == 0))
 			{
-				arg_list = tokenize_tl(cmd_b, " \n", &token_list, &i_argc);
+				arg_list = tokenize_tl(cmd_b, " ", &token_list, &i_argc);
 				ex_code = handle_cmd_type(i_argc, &arg_list);
 				handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
 			}

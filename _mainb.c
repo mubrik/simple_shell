@@ -86,16 +86,16 @@ int handle_bin(int argc, char **argv[])
  */
 int handle_ext(__attribute__((unused)) int argc, char **argv[])
 {
-	char *path = NULL;
-	char **arg_list = *argv;
+	char *path = NULL, **arg_list = *argv;
+	int ex_code = 0;
 	/* check */
 	if (!arg_list)
 		return (BNF);
 	path = _which(arg_list[0]);
 	if (!path)
 		return (CNF);
-	exec_cmd(path, arg_list), free(path);
-	return (0);
+	ex_code = exec_cmd(path, arg_list), free(path);
+	return (ex_code);
 }
 
 /**

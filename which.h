@@ -6,7 +6,6 @@
 
 /* macros */
 
-
 char *_which(char *command);
 
 #endif /* WHICH_H */

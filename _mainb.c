@@ -64,18 +64,18 @@ int (*get_b_in(char *name))(int argc, char *argv[])
  * @argv: array of char argument values
  * Return: 0 on succss
  */
-int handle_bin(int argc, char **argv[])
+int handle_bin(int argc, char *argv[])
 {
 	Bin_handler *handler;
-	char **arg_list = *argv;
+
 	/* check */
-	if (!arg_list)
+	if (!argv)
 		return (BNF);
 	/* get bin handler */
-	handler = get_b_in(arg_list[0]);
+	handler = get_b_in(argv[0]);
 	if (!handler)
 		return (CNF);
-	return (handler(argc, arg_list));
+	return (handler(argc, argv));
 }
 
 /**
@@ -84,17 +84,17 @@ int handle_bin(int argc, char **argv[])
  * @argv: array of char argument values
  * Return: 0 on succss
  */
-int handle_ext(__attribute__((unused)) int argc, char **argv[])
+int handle_ext(__attribute__((unused)) int argc, char *argv[])
 {
-	char *path = NULL, **arg_list = *argv;
+	char *path = NULL;
 	int ex_code = 0;
 	/* check */
-	if (!arg_list)
+	if (!argv)
 		return (BNF);
-	path = _which(arg_list[0]);
+	path = _which(argv[0]);
 	if (!path)
 		return (CNF);
-	ex_code = exec_cmd(path, arg_list), free(path);
+	ex_code = exec_cmd(path, argv), free(path);
 	return (ex_code);
 }
 

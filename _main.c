@@ -7,7 +7,7 @@
  * @n_bytes: ptr to number of bytes written
  * Return: int, number of bytes stored
  */
-ssize_t read_input(__attribute__((unused)) int fd, char **buffer, size_t *n_bytes)
+ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
 {
 	int byte_r;
 	/* write $ */
@@ -79,7 +79,7 @@ int exec_cmd(char *path, char **args)
  */
 int main(__attribute__((unused)) int argc, char *argv[])
 {
-	int n_read, i_argc = 0, ex_code = 0;
+	int n_read, i_argc = 0, ex_code = 0, cmd_exec = 0;
 	buf inp_b = NULL, *arg_list = NULL, tmp_b = NULL, cmd_b = NULL, tok_r = NULL;
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
@@ -93,8 +93,8 @@ int main(__attribute__((unused)) int argc, char *argv[])
 			cmd_b = _strtok_r(tmp_b, "\n;", &tok_r);
 			if (cmd_b && (ex_code == 0))
 			{
-				arg_list = tokenize_tl(cmd_b, " \t", &token_list, &i_argc);
-				ex_code = handle_cmd_type(i_argc, &arg_list);
+				arg_list = tokenize_tl(cmd_b, " \t", &token_list, &i_argc), cmd_exec++;
+				ex_code = handle_cmd_type(i_argc, arg_list);
 				handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
 			}
 			else
@@ -115,19 +115,12 @@ int main(__attribute__((unused)) int argc, char *argv[])
  * @argv: array of char argument values
  * Return: int
  */
-int handle_cmd_type(int argc, char ***argv)
+int handle_cmd_type(int argc, char **argv)
 {
-	char **arg_list = NULL;
-
 	if (!argv)
-		return (-1);
+		return (0);
 
-	arg_list = *argv;
-
-	if (!arg_list)
-		return (-1);
-
-	if (is_builtin(arg_list[0]))
+	if (is_builtin(argv[0]))
 		return (handle_bin(argc, argv));
 	else
 		return (handle_ext(argc, argv));

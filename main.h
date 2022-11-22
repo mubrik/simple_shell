@@ -43,9 +43,9 @@ ssize_t read_input(int fd, char **buffer, size_t *n_bytes);
 int set_buffers(char **input_b);
 char **filter_argv(char **argv, int argc);
 int exec_cmd(char *path, char **args);
-int handle_ext(int argc, char **argv[]);
-int handle_bin(int argc, char **argv[]);
+int handle_ext(int argc, char *argv[]);
+int handle_bin(int argc, char *argv[]);
 int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[]);
-int handle_cmd_type(int argc, char ***argv);
+int handle_cmd_type(int argc, char **argv);
 
 #endif /* MAIN_h */

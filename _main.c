@@ -14,8 +14,8 @@ ssize_t read_input(__attribute__((unused)) int fd, char **buffer, size_t *n_byte
 	fflush(stdout), fflush(stderr);
 	if (isatty(STDIN_FILENO)) /* real interactive mode check */
 		write(1, "#cisfun$ ", 9);
-	/* byte_r = read(fd, *buffer, *n_bytes); */
-	byte_r = getline(buffer, n_bytes, stdin);
+	byte_r = read(fd, *buffer, *n_bytes);
+	/* byte_r = getline(buffer, n_bytes, stdin); */
 	if (byte_r <= 0) /* 0 == EOF */
 	{
 		/* frreing not necessary as app is exiting but doing it anyways */
@@ -24,7 +24,7 @@ ssize_t read_input(__attribute__((unused)) int fd, char **buffer, size_t *n_byte
 		free(*buffer);
 		return (-1);
 	}
-	/* (*buffer)[byte_r] = '\0'; */
+	(*buffer)[byte_r] = '\0';
 	return (byte_r);
 }
 
@@ -84,15 +84,6 @@ int main(__attribute__((unused)) int argc, char *argv[])
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
 	/* non interactive mode */
-	/* if (argc > 1)
-	{
-		arg_list = filter_argv(argv, argc);
-		if (!arg_list)
-			return (-1);
-		ex_code = handle_cmd_type(argc - 1, &arg_list);
-		handle_p_exit(ex_code, argv[0], argc - 1, arg_list), free(arg_list);
-		return (ex_code);
-	} */
 	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);
 	while ((n_read = read_input(STDIN_FILENO, &inp_b, &inp_bytes)) != -1)
@@ -102,7 +93,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 			cmd_b = _strtok_r(tmp_b, "\n;", &tok_r);
 			if (cmd_b && (ex_code == 0))
 			{
-				arg_list = tokenize_tl(cmd_b, " ", &token_list, &i_argc);
+				arg_list = tokenize_tl(cmd_b, " \t", &token_list, &i_argc);
 				ex_code = handle_cmd_type(i_argc, &arg_list);
 				handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
 			}
@@ -113,6 +104,8 @@ int main(__attribute__((unused)) int argc, char *argv[])
 			break;
 		ex_code = 0; /* going again, reset ex_code */
 	}
+	if (inp_b)
+		free(inp_b);
 	return (ex_code);
 }
 

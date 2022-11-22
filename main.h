@@ -9,7 +9,7 @@
 #include "env.h"
 
 /* macros */
-#define IN_BUFF_SIZE 1024
+#define IN_BUFF_SIZE 256
 /**
  * is_builtin - checks if string is a built in arg
  * @s: ponter t string

@@ -95,7 +95,7 @@ char *_strtok(char *str, char *delim)
 
 	if (!str)
 		src_ptr = p_stor;
-	if (!src_ptr || *src_ptr == '\0')
+	if (!src_ptr)
 		return (NULL);
 	for (i = 0; src_ptr[i]; i++)
 	{

@@ -93,7 +93,12 @@ char *_strconcatd(const char *src, const char *adda, const char *addb)
 	*/
 char *_strdup(const char *src)
 {
-	unsigned int len = _strlen(src);
+	unsigned int len;
+
+	if (!src)
+		return (NULL);
+
+	len = _strlen(src);
 
 	char *new = malloc(len + 1);
 

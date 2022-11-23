@@ -106,8 +106,7 @@ int handle_ext(__attribute__((unused)) int argc, char *argv[])
  * @arg_list: the arg_list
  * Return: 0 on succss
  */
-int handle_p_exit(int ex_flag, __attribute__((unused)) char *main_name,
-	int argc, char *arg_list[])
+int handle_p_exit(int ex_flag, char *main_name, int argc, char *arg_list[])
 {
 	if (ex_flag < 0 || !ex_flag)
 		return (ex_flag);
@@ -117,8 +116,8 @@ int handle_p_exit(int ex_flag, __attribute__((unused)) char *main_name,
 		case CNF:
 			if (argc > 0)
 				_print(main_name, STDERR_FILENO), _print(": ", STDERR_FILENO);
-			_print("No such file or directory\n", STDERR_FILENO);
-			return (0);
+			_print("not found\n", STDERR_FILENO);
+			return (CNF);
 		case ANV:
 			if (argc >= 1)
 				_print(arg_list[1], STDERR_FILENO), _print(": ", STDERR_FILENO);

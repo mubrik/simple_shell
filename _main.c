@@ -79,7 +79,7 @@ int exec_cmd(char *path, char **args)
  */
 int main(__attribute__((unused)) int argc, char *argv[])
 {
-	int n_read, i_argc = 0, ex_code = 0, cmd_exec = 0;
+	int n_read, i_argc = 0, ex_code = 0, cmd_num = 0;
 	buf inp_b = NULL, *arg_list = NULL, tmp_b = NULL, cmd_b = NULL, tok_r = NULL;
 	u_long inp_bytes = IN_BUFF_SIZE;
 	token_list_t *token_list = NULL;
@@ -93,9 +93,10 @@ int main(__attribute__((unused)) int argc, char *argv[])
 			cmd_b = _strtok_r(tmp_b, "\n;", &tok_r);
 			if (cmd_b && (ex_code == 0))
 			{
-				arg_list = tokenize_tl(cmd_b, " \t", &token_list, &i_argc), cmd_exec++;
+				arg_list = tokenize_tl(cmd_b, " \t", &token_list, &i_argc), cmd_num++;
 				ex_code = handle_cmd_type(i_argc, arg_list);
-				handle_p_exit(ex_code, argv[0], i_argc, arg_list), free(arg_list);
+				handle_p_exit(ex_code, argv[0], i_argc, arg_list);
+				free(arg_list);
 			}
 			else
 				break;

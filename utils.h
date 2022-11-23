@@ -25,7 +25,7 @@
 typedef enum ex_flag
 {
 	OK = 0,
-	CNF = 1 << 0,
+	CNF = 127 << 0,
 	FNF = 1 << 1,
 	BNF = 1 << 2,
 	ANV = 1 << 3,

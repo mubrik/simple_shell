@@ -38,3 +38,24 @@ char *_strtok_r(char *str, char *delim, char **saveptr)
 
 	return (ret_p);
 }
+
+/**
+  * *_strncpy - function that copies a string.
+	* @src_ptr: src pointer char
+	* @dest_ptr: destination pointer char
+	* @n: number to add
+	* Return: *char
+	*/
+char *_strncpy(char *src_ptr, char *dest_ptr, int n)
+{
+	int i = 0;
+
+	/* now add dst value from nul ptr */
+	while (i < n)
+	{
+		/* use iteration length to add to pointer */
+		dest_ptr[i] = src_ptr[i], i++;
+	}
+
+	return (dest_ptr);
+}

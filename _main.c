@@ -21,7 +21,7 @@ ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
 		/* frreing not necessary as app is exiting but doing it anyways */
 		if (is_env_change(0))
 			free_lst(environ), free(environ);
-		free(*buffer);
+		free(*buffer), *buffer = NULL;
 		return (-1);
 	}
 	(*buffer)[byte_r] = '\0';
@@ -35,7 +35,7 @@ ssize_t read_input(int fd, char **buffer, size_t *n_bytes)
  */
 int set_buffers(char **input_b)
 {
-	*input_b = malloc(IN_BUFF_SIZE);
+	*input_b = malloc(sizeof(char) * (IN_BUFF_SIZE + 1));
 	if (!(*input_b))
 		return (0);
 	return (1);
@@ -86,7 +86,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 	/* non interactive mode */
 	if (!set_buffers(&inp_b)) /* interactive */ /* chck */
 		return (-1);
-	while ((n_read = read_input(STDIN_FILENO, &inp_b, &inp_bytes)) != -1)
+	while ((n_read = read_inputv(STDIN_FILENO, &inp_b, inp_bytes)) != -1)
 	{
 		for (tmp_b = inp_b; ; tmp_b = NULL)
 		{

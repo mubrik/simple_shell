@@ -40,6 +40,7 @@ typedef struct builtin_op
 
 /* functions */
 ssize_t read_input(int fd, char **buffer, size_t *n_bytes);
+ssize_t read_inputv(int fd, char **buffer, size_t n_bytes);
 int set_buffers(char **input_b);
 char **filter_argv(char **argv, int argc);
 int exec_cmd(char *path, char **args);

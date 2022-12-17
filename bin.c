@@ -22,13 +22,13 @@ int Bin_exit(shell_data_t *shell_d, cmd_prop_t *cmd)
 	ex_code = _atoi(cmd->argv[1]);
 	if (ex_code == 0) /* most likely illegal */
 	{
-		_print_err(shell_d, cmd, "illegal number:");
+		_print_err(shell_d, cmd, "illegal number: ");
 		_print(cmd->argv[1], STDERR_FILENO);
 		_print("\n", STDERR_FILENO), ex_code = 2;
 	}
 	else if (ex_code < 0)
 	{
-		_print_err(shell_d, cmd, "illegal number:");
+		_print_err(shell_d, cmd, "illegal number: ");
 		_print_num(ex_code, STDERR_FILENO);
 		_print("\n", STDERR_FILENO), ex_code = 2;
 	}
@@ -67,7 +67,7 @@ int Bin_setenv(__attribute__((__unused__)) shell_data_t *shell_d,
 
 	/* check */
 	if (cmd->argc < 3)
-		return (ANV);
+		return (0);
 	return (_setenv(cmd->argv[1], cmd->argv[2], 1));
 }
 
@@ -83,6 +83,6 @@ int Bin_unsetenv(__attribute__((__unused__)) shell_data_t *shell_d,
 
 	/* check */
 	if (cmd->argc < 2)
-		return (ANV);
+		return (0);
 	return (_unsetenv(cmd->argv[1]));
 }

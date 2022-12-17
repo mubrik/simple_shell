@@ -136,10 +136,10 @@ int _unsetenv(char *name)
 	int env_s = 0, i = 0, j = 0;
 
 	if (!name)
-		return (ANV);
+		return (0);
 	exist = _is_in_env(name);
 	if (!exist)
-		return (ANV);
+		return (0);
 	/* it esixts, get environment size */
 	env_s = lst_size(env);
 	/* make array buffer */

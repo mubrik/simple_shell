@@ -17,8 +17,9 @@ int process_cmds(shell_data_t *shell_d)
 	/* iterate over each commd */
 	for (i = 0; cmd; cmd = cmd->next, i++)
 	{
-		/* logical operators or split command eg ;|& */
-		if (cmd->flag == CMD_AND && ex_code != 0)
+		/* logical operators or split command eg |& */
+		if ((cmd->flag == CMD_AND && ex_code != 0)
+			|| (cmd->flag == CMD_OR && ex_code == 0))
 		{
 			shell_d->exit_code = ex_code;
 			return (ex_code);

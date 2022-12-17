@@ -24,10 +24,11 @@
 /**
  * enum cmd_op_flag - command operator flag
  * @CMD_AND: run command if last exit success
- * @CMD_OR: run command unconditionally
+ * @CMD_OR: run command only if prev fail
+ * @CMD_NL: Newline run command unconditionally
  */
 typedef enum cmd_op_flag
-{ CMD_AND = 0, CMD_OR = 0 < 1} cmd_op_flag_t;
+{ CMD_AND = 0, CMD_OR = 1 << 0, CMD_NL = 1 << 1} cmd_op_flag_t;
 
 /**
  * enum ex_flag - exit flags for bin or ext commands

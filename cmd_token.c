@@ -129,7 +129,7 @@ void free_cmdlist(cmd_prop_t *head)
  */
 int inp_tok(char *buffer, cmd_prop_t **head)
 {
-	int i, first_f = 0, run_mode = CMD_OR;
+	int i, first_f = 0, run_mode = CMD_NL;
 	char *str_chk, *start = NULL, *delim = ";|&\n";
 
 	if (!buffer)
@@ -144,8 +144,10 @@ int inp_tok(char *buffer, cmd_prop_t **head)
 			buffer[i] = '\0'; /* terminate and add node to linked list */
 			add_node_cmd_end(head, start, run_mode);
 			/* change next command mode based on delim */
-			if (*str_chk == '&' || *str_chk == '\n')
+			if (*str_chk == '&')
 				run_mode = CMD_AND;
+			else if (*str_chk == '\n' || *str_chk == ';')
+				run_mode = CMD_NL;
 			else
 				run_mode = CMD_OR;
 			/* reset first */

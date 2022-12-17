@@ -37,4 +37,20 @@ char **tokenize_tl(char *input_b, char *delim,
 void free_list(token_list_t **head);
 char **tokenize_args(char *input_b, char *delim, int argc);
 
+/* new */
+
+/* cmd_list functions */
+cmd_prop_t *add_node_cmd_end(cmd_prop_t **head, char *buf, int n);
+size_t cmdlist_len(const cmd_prop_t *head);
+size_t print_cmdlist(const cmd_prop_t *head);
+int inp_tok(char *buffer, cmd_prop_t **head);
+void free_cmdlist(cmd_prop_t *head);
+
+/* arg_list functions */
+char **arg_tok(char *input_b, char *delim, int *l_size);
+arg_list_t *add_node_argl_end(arg_list_t **head, char *str);
+void free_arg_list(arg_list_t *head);
+int cmd_to_args(cmd_prop_t *cmd_list);
+int print_args_cmdlist(cmd_prop_t *cmd_list);
+
 #endif /* TOKEN_H */

@@ -52,7 +52,8 @@ int (*get_b_in(char *name))(int argc, char *argv[])
 	for (i = 0; i < 4; i++)
 	{
 		if (_strcmp(name, builtin_l[i].name) == 0)
-			return (builtin_l[i].func);
+			return (NULL);
+			/* return (builtin_l[i].func); */
 	}
 
 	return (NULL);

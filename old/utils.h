@@ -14,6 +14,67 @@
 #define P_BUFF_SIZE 1024
 
 /**
+ * enum cmd_op_flag - command operator flag
+ * @CMD_AND: run command if last exit success
+ * @CMD_OR: run command unconditionally
+ */
+typedef enum cmd_op_flag
+{ CMD_AND = 0, CMD_OR = 0 < 1} cmd_op_flag_t;
+
+/**
+ * struct cmd_prop - commands and property
+ * @cmd: the command, null terminated string
+ * @flag: the flag/type of the token
+ * @next: pointer to next token
+ * @prev: pointer to prev token
+ */
+typedef struct cmd_prop
+{
+	char *cmd;
+	char **argv;
+	int argc;
+	cmd_op_flag_t flag;
+	struct cmd_prop *next;
+	struct cmd_prop *prev;
+} cmd_prop_t;
+
+/**
+ * struct arg_list_t - list of tokenized args
+ * @token: the token, null terminated string
+ * @next: pointer to next token
+ * @prev: pointer to prev token
+ */
+typedef struct arg_list
+{
+	char *token;
+	struct arg_list *next;
+	struct arg_list *prev;
+} arg_list_t;
+
+
+/**
+ * struct shell_data_t - hold necessary shell data
+ * @exit_code: exit code
+ * @cmd_num: the index of current command
+ * @i_mode: intercative mode
+ * @input_buff: the main inpu buffer, malloc'd
+ * @cmd_list: doubly linked command cmd_prop_t list
+ * @shell_argc: argc of shell
+ * @shell_argv: ptr argv of shell
+ */
+typedef struct shell_data
+{
+	int exit_code;
+	int cmd_num;
+	int i_mode;
+	char *input_buff;
+	cmd_prop_t *cmd_list;
+	int shell_argc;
+	char **shell_argv;
+} shell_data_t;
+
+
+/**
  * enum ex_flag - exit flags for bin or ext commands
  * @OK: ok
  * @CNF: command not found

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "shell.h"
 
 /**
  * _strocr - counts the amount of time a charcter occurs in a str, skips reocr
@@ -100,9 +100,9 @@ char *_strtok(char *str, char *delim)
 	for (i = 0; src_ptr[i]; i++)
 	{
 		str_chk = _strchr(delim, src_ptr[i]);
-		if (!first_f && !str_chk)
+		if (!first_f && !str_chk) /* first char that isnt delim */
 			ret_p = &src_ptr[i], first_f = 1;
-		if (first_f && str_chk)
+		if (first_f && str_chk) /* have a first char and found delim */
 		{
 			src_ptr[i] = '\0';
 			if (src_ptr[i + 1])

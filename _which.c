@@ -1,11 +1,4 @@
-#include "which.h"
-
-/**
- * is_path - checks if string is a pathname
- * @s: ponter t string
- * Return: int
- */
-static inline int is_path(char *s) { return ((s[0] == '.') || (s[0] == '/')); }
+#include "shell.h"
 
 /**
  * _which - find the first valid command path, mallocd
@@ -46,13 +39,11 @@ char *_which(char *command)
 				free(f_path), f_path = NULL; /* f_path is malloc'd */
 			else
 			{
-				/* valid path found */
-				free(path);
+				free(path); /* valid path found */
 				return (f_path);
 			}
 		}
 	}
-
 	if (path)
 		free(path);
 	return (f_path);

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "shell.h"
 
 /**
  * is_env_change - checks if a variable in environment

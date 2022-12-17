@@ -95,13 +95,13 @@ int Bin_unsetenv(__attribute__((__unused__)) shell_data_t *shell_d,
  */
 int Bin_cd(shell_data_t *shell_d, cmd_prop_t *cmd)
 {
-	int ex_code = 0;
+	int ex_code = 0, go_back = 0;
 	buf curr_path = NULL, path = NULL;
 
 	if (cmd->argc == 1 || !cmd->argv[1])
 		path = _getenv("HOME"); /* if no arg */
 	else if (_strcmp(cmd->argv[1], "-") == 0)
-		path = _getenv("OLDPWD"); /* if - */
+		path = _getenv("OLDPWD"), go_back = 1; /* if - */
 	else
 		path = cmd->argv[1];
 	if (!path)
@@ -111,6 +111,8 @@ int Bin_cd(shell_data_t *shell_d, cmd_prop_t *cmd)
 		return (0);
 	/* save curr pwd */
 	getcwd(curr_path, CD_B);
+	if (go_back && path)
+		_print(path, STDOUT_FILENO), _print("\n", STDOUT_FILENO);
 	/* switch */
 	ex_code = chdir(path);
 	if (ex_code != 0)

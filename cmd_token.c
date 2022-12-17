@@ -144,7 +144,7 @@ int inp_tok(char *buffer, cmd_prop_t **head)
 			buffer[i] = '\0'; /* terminate and add node to linked list */
 			add_node_cmd_end(head, start, run_mode);
 			/* change next command mode based on delim */
-			if (*str_chk == '&' || *str_chk == ';' || *str_chk == '\n')
+			if (*str_chk == '&' || *str_chk == '\n')
 				run_mode = CMD_AND;
 			else
 				run_mode = CMD_OR;

@@ -24,6 +24,7 @@ int process_cmds(shell_data_t *shell_d)
 			return (ex_code);
 		}
 		ex_code = handle_type_cmd(shell_d, cmd);
+		shell_d->cmd_num = shell_d->cmd_num + i;
 	}
 
 	shell_d->exit_code = ex_code;
@@ -112,7 +113,7 @@ int proc_ext_cmd(__attribute__((__unused__)) shell_data_t *shell_d,
 	path = _which(cmd->argv[0]);
 	if (!path)
 	{
-		errno = ENOENT, perror(shell_d->shell_argv[0]);
+		errno = ENOENT, _print_err(shell_d, cmd, "not found\n");
 		return (CNF);
 	}
 	ex_code = exec_cmd(path, cmd->argv), free(path);

@@ -162,6 +162,7 @@ char *_strtok(char *str, char *delim);
 char *_strtok_r(char *str, char *delim, char **saveptr);
 
 /* cmd_list functions */
+
 cmd_prop_t *add_node_cmd_end(cmd_prop_t **head, char *buf, int n);
 size_t cmdlist_len(const cmd_prop_t *head);
 size_t print_cmdlist(const cmd_prop_t *head);
@@ -169,6 +170,7 @@ int inp_tok(char *buffer, cmd_prop_t **head);
 void free_cmdlist(cmd_prop_t *head);
 
 /* arg_list functions */
+
 char **arg_tok(char *input_b, char *delim, int *l_size);
 arg_list_t *add_node_argl_end(arg_list_t **head, char *str);
 void free_arg_list(arg_list_t *head);
@@ -187,6 +189,8 @@ int free_lst(char **arr);
 /* print functions */
 
 int _print(const char *string, int fd);
+int _print_num(int num, int fd);
+int _print_err(shell_data_t *shell_d, cmd_prop_t *cmd, char *err);
 int print_buffer(int fd, char *buffer, int byte_count);
 int add_to_buffer(int fd, char str, char *buffer, int *buffer_i);
 

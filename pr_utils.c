@@ -28,6 +28,66 @@ int _print(const char *string, int fd)
 	return (count);
 }
 
+/**
+ * _print_num - does prints numbers
+ * @num: num to print
+ * @fd: stdin or stderr
+ * Return: number
+ */
+int _print_num(int num, int fd)
+{
+	char *buffer;
+	int count = 0, buffer_i = 0;
+	unsigned int div_by = 1;
+
+	if (!fd)
+		return (-1);
+	/* alloc */
+	buffer = malloc(P_BUFF_SIZE);
+	if (!buffer)
+		return (-1);
+	/* div and prin remainder */
+	while ((num / div_by) > 9)
+		div_by *= 10;
+	while (div_by > 0)
+	{
+		add_to_buffer(fd, ((num / div_by) % 10) + '0', buffer, &buffer_i);
+		count++, div_by /= 10;
+	}
+
+	/* print last buffer */
+	print_buffer(fd, buffer, buffer_i);
+	/* free */
+	free(buffer);
+	return (count);
+}
+
+/**
+ * _print_err - wrapper to print error easily
+ * @shell_d: shell data
+ * @cmd: cmd_prop_t
+ * @err: err string
+ * Return: number
+ */
+int _print_err(shell_data_t *shell_d, cmd_prop_t *cmd, char *err)
+{
+	if (!shell_d || !cmd)
+		return (0);
+	/* print program name */
+	_print(shell_d->shell_argv[0], STDERR_FILENO);
+	_print(": ", STDERR_FILENO);
+	/* print line number */
+	_print_num(shell_d->cmd_num, STDERR_FILENO);
+	_print(": ", STDERR_FILENO);
+	/* print cmd with err */
+	_print(cmd->argv[0], STDERR_FILENO);
+	_print(": ", STDERR_FILENO);
+	/* print string */
+	if (err)
+		_print(err, STDERR_FILENO);
+	return (0);
+}
+
 
 /**
  * print_buffer - writes bytes of a buffer to stdout

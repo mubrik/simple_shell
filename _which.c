@@ -7,7 +7,7 @@
  */
 char *_which(char *command)
 {
-	char *path = NULL, *pathname = NULL, *str = NULL, *f_path = NULL;
+	buf path = NULL, pathname = NULL, str = NULL, f_path = NULL, tmp = NULL;
 	struct stat f_info;
 
 	if (!command)
@@ -17,14 +17,16 @@ char *_which(char *command)
 	{
 		if (stat(command, &f_info) == 0)
 		{
-			/* confirm its a file not directory */
-			if ((f_info.st_mode & S_IFMT) == S_IFREG)
+			if ((f_info.st_mode & S_IFMT) == S_IFREG) /* confirm file not dir */
 				f_path = _strdup(command); /* dup cause free after */
 		}
 	}
 	else
 	{
-		path = _strdup(_getenv("PATH")); /* dup cause tokenization cuts orig */
+		tmp = _getenv("PATH");
+		if (!tmp)
+			return (tmp);
+		path = _strdup(tmp); /* dup cause tokenization cuts orig */
 		if (!path)
 			return (NULL);
 		for (str = path; ; str = NULL)
@@ -32,10 +34,8 @@ char *_which(char *command)
 			pathname = _strtok(str, ":");
 			if (!pathname)
 				break;
-			/* concat '/' then command */
-			f_path = _strconcatd(pathname, "/", command);
-			/* check if path + cmd is correct */
-			if (stat(f_path, &f_info) == -1)
+			f_path = _strconcatd(pathname, "/", command); /* concat '/' then command */
+			if (stat(f_path, &f_info) == -1) /* check if path + cmd is correct */
 				free(f_path), f_path = NULL; /* f_path is malloc'd */
 			else
 			{

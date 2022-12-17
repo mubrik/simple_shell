@@ -11,7 +11,13 @@ int Bin_exit(shell_data_t *shell_d, cmd_prop_t *cmd)
 	int ex_code = 0;
 
 	if (cmd->argc <= 1 || !cmd->argv[1])
-		free_shell_data(shell_d), exit(EXIT_SUCCESS);
+	{
+		/* get prev command ex code and free shell data */
+		ex_code = shell_d->exit_code, free_shell_data(shell_d);
+		if (ex_code)
+			exit(ex_code);
+		exit(EXIT_SUCCESS);
+	}
 	/* convert arg to int, unsafe */
 	ex_code = _atoi(cmd->argv[1]);
 	free_shell_data(shell_d), exit(ex_code);

@@ -22,13 +22,13 @@ int Bin_exit(shell_data_t *shell_d, cmd_prop_t *cmd)
 	ex_code = _atoi(cmd->argv[1]);
 	if (ex_code == 0) /* most likely illegal */
 	{
-		_print_err(shell_d, cmd, "illegal number: ");
+		_print_err(shell_d, cmd, "Illegal number: ");
 		_print(cmd->argv[1], STDERR_FILENO);
 		_print("\n", STDERR_FILENO), ex_code = 2;
 	}
 	else if (ex_code < 0)
 	{
-		_print_err(shell_d, cmd, "illegal number: ");
+		_print_err(shell_d, cmd, "Illegal number: ");
 		_print_num(ex_code, STDERR_FILENO);
 		_print("\n", STDERR_FILENO), ex_code = 2;
 	}
@@ -85,4 +85,45 @@ int Bin_unsetenv(__attribute__((__unused__)) shell_data_t *shell_d,
 	if (cmd->argc < 2)
 		return (0);
 	return (_unsetenv(cmd->argv[1]));
+}
+
+/**
+ * Bin_cd - change dir function
+ * @shell_d: shell data
+ * @cmd: ptr tocmd cmd_prop_t
+ * Return: int
+ */
+int Bin_cd(shell_data_t *shell_d, cmd_prop_t *cmd)
+{
+	int ex_code = 0;
+	buf curr_path = NULL, path = NULL;
+
+	if (cmd->argc == 1 || !cmd->argv[1])
+		path = _getenv("HOME"); /* if no arg */
+	else if (_strcmp(cmd->argv[1], "-") == 0)
+		path = _getenv("OLDPWD"); /* if - */
+	else
+		path = cmd->argv[1];
+	if (!path)
+		return (0);
+	curr_path = malloc(sizeof(char) * CD_B);
+	if (!curr_path)
+		return (0);
+	/* save curr pwd */
+	getcwd(curr_path, CD_B);
+	/* switch */
+	ex_code = chdir(path);
+	if (ex_code != 0)
+	{
+		/* error occured */
+		ex_code = errno, perror(shell_d->shell_argv[0]), free(curr_path);
+		return (ex_code);
+	}
+	/* update old path */
+	_setenv("OLDPWD", curr_path, 1);
+	/* get new path */
+	getcwd(curr_path, CD_B);
+	/* update path */
+	ex_code = _setenv("PWD", curr_path, 1), free(curr_path);
+	return (ex_code);
 }

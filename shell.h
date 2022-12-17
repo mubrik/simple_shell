@@ -15,6 +15,8 @@
 #define IN_BUFF_SIZE 20
 /* print buffer size */
 #define P_BUFF_SIZE 1024
+/* cd path buffer */
+#define CD_B 4028
 
 
 /* structs and enums */
@@ -143,6 +145,8 @@ Bin_func Bin_exit;
 Bin_func Bin_env;
 Bin_func Bin_setenv;
 Bin_func Bin_unsetenv;
+Bin_func Bin_cd;
+Bin_func Bin_pwd;
 
 /* string functions */
 
@@ -214,7 +218,8 @@ Bin_func (*get_bin_func(char *name));
  */
 static inline int is_builtin(char *s)
 { return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
-	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)); }
+	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)
+	|| (_strcmp(s, "cd") == 0) || (_strcmp(s, "pwd") == 0)); }
 
 /**
  * is_path - checks if string is a pathname

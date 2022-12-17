@@ -46,6 +46,11 @@ int _print_num(int num, int fd)
 	buffer = malloc(P_BUFF_SIZE);
 	if (!buffer)
 		return (-1);
+	if (num < 0) /* neg sign */
+	{
+		add_to_buffer(fd, '-', buffer, &buffer_i);
+		num = num * -1;
+	}
 	/* div and prin remainder */
 	while ((num / div_by) > 9)
 		div_by *= 10;

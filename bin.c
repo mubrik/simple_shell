@@ -20,6 +20,18 @@ int Bin_exit(shell_data_t *shell_d, cmd_prop_t *cmd)
 	}
 	/* convert arg to int, unsafe */
 	ex_code = _atoi(cmd->argv[1]);
+	if (ex_code == 0) /* most likely illegal */
+	{
+		_print_err(shell_d, cmd, "illegal number:");
+		_print(cmd->argv[1], STDERR_FILENO);
+		_print("\n", STDERR_FILENO), ex_code = 2;
+	}
+	else if (ex_code < 0)
+	{
+		_print_err(shell_d, cmd, "illegal number:");
+		_print_num(ex_code, STDERR_FILENO);
+		_print("\n", STDERR_FILENO), ex_code = 2;
+	}
 	free_shell_data(shell_d), exit(ex_code);
 }
 

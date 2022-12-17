@@ -27,6 +27,6 @@ int exec_cmd(char *path, char **args)
 		execve(path, args, environ);
 	}
 	if (WIFEXITED(c_status))
-		return WEXITSTATUS(c_status);
+		return (WEXITSTATUS(c_status));
 	return (0);
 }

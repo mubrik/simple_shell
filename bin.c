@@ -101,7 +101,11 @@ int Bin_cd(shell_data_t *shell_d, cmd_prop_t *cmd)
 	if (cmd->argc == 1 || !cmd->argv[1])
 		path = _getenv("HOME"); /* if no arg */
 	else if (_strcmp(cmd->argv[1], "-") == 0)
+	{
 		path = _getenv("OLDPWD"), go_back = 1; /* if - */
+		if (!path)
+			path = _getenv("PWD");
+	}
 	else
 		path = cmd->argv[1];
 	if (!path)
@@ -118,8 +122,9 @@ int Bin_cd(shell_data_t *shell_d, cmd_prop_t *cmd)
 	if (ex_code != 0)
 	{
 		/* error occured */
-		ex_code = errno, perror(shell_d->shell_argv[0]), free(curr_path);
-		return (ex_code);
+		ex_code = errno, _print_err(shell_d, cmd, "can't cd to ");
+		_print(path, STDERR_FILENO), _print("\n", STDERR_FILENO), free(curr_path);
+		return (0);
 	}
 	/* update old path */
 	_setenv("OLDPWD", curr_path, 1);

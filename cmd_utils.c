@@ -67,10 +67,10 @@ int (*get_bin_func(char *name))(shell_data_t *shell_d, cmd_prop_t *cmd)
 		{"setenv", Bin_setenv},
 		{"unsetenv", Bin_unsetenv},
 		{"cd", Bin_cd},
-		{"pwd", Bin_pwd},
+		{"pwd", Bin_pwd}, {"alias", Bin_alias},
 	};
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 7; i++)
 	{
 		if (_strcmp(name, builtin_l[i].name) == 0)
 			return (builtin_l[i].func);

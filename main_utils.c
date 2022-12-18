@@ -28,6 +28,8 @@ int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
 	shell_d->input_buff = input_b;
 	/* head for command list */
 	shell_d->cmd_list = NULL;
+	/* alias */
+	shell_d->alias_head = NULL;
 	return (0);
 }
 
@@ -93,6 +95,12 @@ int free_shell_data(shell_data_t *shell_d)
 	if (shell_d->cmd_list)
 		/* free up arg_list in command list */
 		ref_shell_data(shell_d);
+	/* alias list */
+	if (shell_d->alias_head)
+		free_aliaslist(shell_d->alias_head), shell_d->alias_head = NULL;
+	/* environmnet variables */
+	if (is_env_change(0))
+		free_lst(environ), free(environ);
 	return (0);
 }
 
@@ -137,9 +145,7 @@ ssize_t get_input(int fd, shell_data_t *shell_d)
 	if (total_r <= 0) /* 0 == EOF */
 	{
 		/* frreing not necessary as app is exiting but doing it anyways */
-		if (is_env_change(0))
-			free_lst(environ), free(environ);
-		free(shell_d->input_buff), shell_d->input_buff = NULL;
+		free_shell_data(shell_d);
 		return (-1);
 	}
 	(main_buff)[total_r] = '\0';

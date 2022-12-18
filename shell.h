@@ -80,12 +80,28 @@ typedef struct arg_list
 } arg_list_t;
 
 /**
+ * struct alias_d - a node for alias_type
+ * @name: alias name
+ * @value: alias value
+ * @next: pointer to next token
+ * @prev: pointer to prev token
+ */
+typedef struct alias_d
+{
+	char *name;
+	char *value;
+	struct alias_d *next;
+	struct alias_d *prev;
+} alias_d_t;
+
+/**
  * struct shell_data_t - hold necessary shell data
  * @exit_code: exit code
  * @cmd_num: the index of current command
  * @i_mode: intercative mode
  * @input_buff: the main inpu buffer, malloc'd
  * @cmd_list: doubly linked command cmd_prop_t list
+ * @alias_head: head of doubly linked alias_d_t list
  * @shell_argc: argc of shell
  * @shell_argv: ptr argv of shell
  */
@@ -96,6 +112,7 @@ typedef struct shell_data
 	int i_mode;
 	char *input_buff;
 	cmd_prop_t *cmd_list;
+	alias_d_t *alias_head;
 	int shell_argc;
 	char **shell_argv;
 } shell_data_t;
@@ -148,6 +165,7 @@ Bin_func Bin_setenv;
 Bin_func Bin_unsetenv;
 Bin_func Bin_cd;
 Bin_func Bin_pwd;
+Bin_func Bin_alias;
 
 /* string functions */
 
@@ -165,6 +183,7 @@ char *_strconcatd(const char *src, const char *adda, const char *addb);
 char *_strchr(char *str_ptr, char c);
 char *_strtok(char *str, char *delim);
 char *_strtok_r(char *str, char *delim, char **saveptr);
+unsigned int _strspn(char *src, char *accept);
 
 /* cmd_list functions */
 
@@ -181,6 +200,15 @@ arg_list_t *add_node_argl_end(arg_list_t **head, char *str);
 void free_arg_list(arg_list_t *head);
 int cmd_to_args(cmd_prop_t *cmd_list);
 int print_args_cmdlist(cmd_prop_t *cmd_list);
+
+/* alias */
+/* would have been better with hashtable? */
+
+alias_d_t *add_node_alias_end(alias_d_t **head, char *name, char *value);
+size_t aliaslist_len(const alias_d_t *head);
+size_t print_aliaslist(alias_d_t *head, char *cmp);
+void free_aliaslist(alias_d_t *head);
+alias_d_t *get_alias_node(alias_d_t *head, char *name);
 
 /* which */
 
@@ -220,7 +248,8 @@ Bin_func (*get_bin_func(char *name));
 static inline int is_builtin(char *s)
 { return ((_strcmp(s, "exit") == 0) || (_strcmp(s, "env") == 0)
 	|| (_strcmp(s, "setenv") == 0) || (_strcmp(s, "unsetenv") == 0)
-	|| (_strcmp(s, "cd") == 0) || (_strcmp(s, "pwd") == 0)); }
+	|| (_strcmp(s, "cd") == 0) || (_strcmp(s, "pwd") == 0)
+	|| (_strcmp(s, "alias") == 0)); }
 
 /**
  * is_path - checks if string is a pathname

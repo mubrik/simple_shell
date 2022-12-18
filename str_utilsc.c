@@ -59,3 +59,25 @@ char *_strncpy(char *src_ptr, char *dest_ptr, int n)
 
 	return (dest_ptr);
 }
+
+/**
+ * _strspn - gets the length of a prefix substring.
+ * @src: the string
+ * @accept: characters
+ * Return: int, len.
+ */
+unsigned int _strspn(char *src, char *accept)
+{
+
+	if (!accept || !src || *accept == '\0' || *src == '\0')
+		return (0);
+	/* check if string in accept */
+	if (*accept == *src)
+	{
+		/* string is in, push forward and call again adding 1 */
+		src++, accept++;
+		return (1 + _strspn(src, accept));
+	}
+	/* recursive base condition */
+	return (0);
+}

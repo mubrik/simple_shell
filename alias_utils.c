@@ -3,8 +3,8 @@
 /**
  * add_node_alias_end - adds a new node at the end of a alias_d_t list.
  * @head: pto to head ptr to list first elem
- * @buf: str to add
- * @n: n for new node
+ * @name: name of alis
+ * @value: value of alias
  * Return: ptr to new node.
  */
 alias_d_t *add_node_alias_end(alias_d_t **head, char *name, char *value)
@@ -94,7 +94,7 @@ size_t print_aliaslist(alias_d_t *head, char *cmp)
 	{
 		if (node->name)
 		{
-			if(cmp && (_strspn(node->name, cmp) < (size_t) _strlen(cmp)))
+			if (cmp && (_strspn(node->name, cmp) < (size_t) _strlen(cmp)))
 				continue;
 			_print(node->name, STDOUT_FILENO), _print("=", STDOUT_FILENO);
 			if (node->value)

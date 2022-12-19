@@ -89,7 +89,7 @@ size_t print_cmdlist(const cmd_prop_t *head)
 	/* iterate */
 	while (node)
 	{
-		/* printf("cmd: %s, flag: %d\n", node->cmd, node->flag); */
+		printf("cmd: %s, flag: %d\n", node->cmd, node->flag);
 		/* push */
 		node = node->next, count++;
 	}

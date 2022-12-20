@@ -67,48 +67,6 @@ size_t aliaslist_len(const alias_d_t *head)
 }
 
 /**
- * print_aliaslist - prints all the elements of a alias_d_t list..
- * @head: head ptr to list first elem
- * @cmp: str to cmp to, if NULl cmp wont be done
- * Return: list size .
- */
-size_t print_aliaslist(alias_d_t *head, char *cmp)
-{
-	size_t count = 0;
-	alias_d_t *node = NULL;
-
-	if (!head)
-		return (count);
-	/* cp first ptr */
-	node = head;
-	/* make sure start of node, not necessary but alx gon alx */
-	while (node)
-	{
-		if (!node->prev)
-			break;
-		node = node->prev;
-	}
-
-	/* iterate */
-	for (count = 0; node; node = node->next, count++)
-	{
-		if (node->name)
-		{
-			if (cmp && (_strspn(node->name, cmp) < (size_t) _strlen(cmp)))
-				continue;
-			_print(node->name, STDOUT_FILENO), _print("=", STDOUT_FILENO);
-			if (node->value)
-			{
-				_print("'", STDOUT_FILENO), _print(node->value, STDOUT_FILENO);
-				_print("'\n", STDOUT_FILENO);
-			}
-		}
-	}
-
-	return (count);
-}
-
-/**
  * free_aliaslist - frees memory of alias_d_t list.
  * @head: pto to head ptr to list first elem
  * Return: ptr to new node.
@@ -165,4 +123,25 @@ alias_d_t *get_alias_node(alias_d_t *head, char *name)
 	}
 
 	return (node);
+}
+
+/**
+ * is_alias_cmd - checks if a command is an alias
+ * @head: pto to head ptr to list first elem
+ * @name: name of fnode
+ * @node: name of fnode
+ * Return: ptr to node or null
+ */
+int is_alias_cmd(alias_d_t *head, char *name, alias_d_t **node)
+{
+	alias_d_t *_node = NULL;
+
+	if (!name || !node || !head)
+		return (0);
+	/* slow search if long list */
+	_node = get_alias_node(head, name);
+	if (!_node)
+		return (0);
+	*node = _node;
+	return (1);
 }

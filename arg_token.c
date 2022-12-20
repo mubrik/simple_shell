@@ -138,27 +138,3 @@ int cmd_to_args(cmd_prop_t *cmd_list)
 
 	return (0);
 }
-
-/**
- * print_args_cmdlist - debug, print args
- * @cmd_list: head
- * Return: 0 on success
- */
-int print_args_cmdlist(cmd_prop_t *cmd_list)
-{
-	int i = 0;
-
-	if (!cmd_list)
-		return (1);
-	/* iterate over each commd */
-	while (cmd_list)
-	{
-		for (i = 0; cmd_list->argv[i]; i++)
-		{
-			_print(cmd_list->argv[i], STDOUT_FILENO);
-		}
-		_print("\n", STDOUT_FILENO);
-		cmd_list = cmd_list->next;
-	}
-	return (i);
-}

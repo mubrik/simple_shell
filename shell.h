@@ -155,6 +155,8 @@ int process_cmds(shell_data_t *shell_d);
 int handle_type_cmd(shell_data_t *shell_d, cmd_prop_t *cmd);
 int proc_bin_cmd(shell_data_t *shell_d, cmd_prop_t *cmd);
 int proc_ext_cmd(shell_data_t *shell_d, cmd_prop_t *cmd);
+int proc_alias_cmd(shell_data_t *shell_d,
+	cmd_prop_t *cmd, alias_d_t *alias);
 int exec_cmd(char *path, char **args);
 
 /* built ins */
@@ -209,6 +211,7 @@ size_t aliaslist_len(const alias_d_t *head);
 size_t print_aliaslist(alias_d_t *head, char *cmp);
 void free_aliaslist(alias_d_t *head);
 alias_d_t *get_alias_node(alias_d_t *head, char *name);
+int is_alias_cmd(alias_d_t *head, char *name, alias_d_t **node);
 
 /* which */
 

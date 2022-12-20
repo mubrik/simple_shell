@@ -1,6 +1,40 @@
 #include "shell.h"
 
 /**
+ * proc_alias_cmd - process an alias command process
+ * @shell_d: shell data
+ * @cmd: ptr tocmd cmd_prop_t
+ * @alias: alais node
+ * Return: 0 on succss
+ */
+int proc_alias_cmd(shell_data_t *shell_d,
+	__attribute__((__unused__)) cmd_prop_t *cmd, alias_d_t *alias)
+{
+	alias_d_t *node = NULL, *tmp = NULL;
+	buf value = NULL, *arr = NULL, str = NULL;
+	int l_size = 0, ex_code;
+
+	if (!shell_d || !alias)
+		return (0);
+	node = alias;
+	/* check if value of alais, is an alias */
+	while (node)
+	{
+		value = node->value;
+		tmp = get_alias_node(alias, value);
+		if (!tmp)
+			break;
+		node = tmp;
+	}
+	/* dup string to avoaid tokenizing alias value */
+	str = _strdup(node->value), arr = arg_tok(str, " \t", &l_size);
+	if (!arr)
+		return (0);
+	ex_code = exec_cmd(str, arr), free(str);
+	return (ex_code);
+}
+
+/**
  * exec_cmd - main function int argc, char *argv[], char *env[]
  * @path: argument count
  * @args: array of char argument values

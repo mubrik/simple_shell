@@ -67,37 +67,6 @@ size_t cmdlist_len(const cmd_prop_t *head)
 }
 
 /**
- * print_cmdlist - prints all the elements of a cmd_prop_t list..
- * @head: head ptr to list first elem
- * Return: list size .
- */
-size_t print_cmdlist(const cmd_prop_t *head)
-{
-	size_t count = 0;
-	cmd_prop_t *node;
-
-	/* cp first ptr, cast to remove const */
-	node = (cmd_prop_t *) head;
-	/* make sure start of node, not necessary but alx gon alx */
-	while (node)
-	{
-		if (!node->prev)
-			break;
-		node = node->prev;
-	}
-
-	/* iterate */
-	while (node)
-	{
-		printf("cmd: %s, flag: %d\n", node->cmd, node->flag);
-		/* push */
-		node = node->next, count++;
-	}
-
-	return (count);
-}
-
-/**
  * free_cmdlist - frees memory of cmd_prop_t list.
  * @head: pto to head ptr to list first elem
  * Return: ptr to new node.

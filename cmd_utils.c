@@ -40,6 +40,8 @@ int process_cmds(shell_data_t *shell_d)
  */
 int handle_type_cmd(shell_data_t *shell_d, cmd_prop_t *cmd)
 {
+	alias_d_t *node = NULL;
+
 	if (!cmd || !shell_d)
 		return (0);
 	/* empty cmd, blank line or tabs */
@@ -48,6 +50,8 @@ int handle_type_cmd(shell_data_t *shell_d, cmd_prop_t *cmd)
 
 	if (is_builtin(cmd->argv[0]))
 		return (proc_bin_cmd(shell_d, cmd));
+	else if (is_alias_cmd(shell_d->alias_head, cmd->argv[0], &node))
+		return (proc_alias_cmd(shell_d, cmd, node));
 	else
 		return (proc_ext_cmd(shell_d, cmd));
 }
@@ -105,8 +109,7 @@ int proc_bin_cmd(shell_data_t *shell_d, cmd_prop_t *cmd)
  * @cmd: ptr tocmd cmd_prop_t
  * Return: 0 on succss
  */
-int proc_ext_cmd(__attribute__((__unused__)) shell_data_t *shell_d,
-	cmd_prop_t *cmd)
+int proc_ext_cmd(shell_data_t *shell_d, cmd_prop_t *cmd)
 {
 	char *path = NULL;
 	int ex_code = 0;

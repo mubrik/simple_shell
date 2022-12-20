@@ -30,7 +30,8 @@ int proc_alias_cmd(shell_data_t *shell_d,
 	str = _strdup(node->value), arr = arg_tok(str, " \t", &l_size);
 	if (!arr)
 		return (0);
-	ex_code = exec_cmd(str, arr), free(str);
+	ex_code = exec_cmd(str, arr);
+	free(arr), free(str);
 	return (ex_code);
 }
 

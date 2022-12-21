@@ -155,10 +155,10 @@ ssize_t get_input(int fd, shell_data_t *shell_d)
 
 	if (total_r <= 0) /* 0 == EOF */
 	{
-		/* frreing not necessary as app is exiting but doing it anyways */
 		free_shell_data(shell_d);
 		return (-1);
 	}
 	(main_buff)[total_r] = '\0';
+	_str_comment(shell_d); /* strip comments */
 	return (total_r);
 }

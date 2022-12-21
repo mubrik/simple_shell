@@ -195,6 +195,7 @@ char *_strtok(char *str, char *delim);
 char *_strtok_r(char *str, char *delim, char **saveptr);
 unsigned int _strspn(char *src, char *accept);
 char *_itoa(int value, char *result, int base);
+int _str_comment(shell_data_t *shell_d);
 
 /* cmd_list functions */
 

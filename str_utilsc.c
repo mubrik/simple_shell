@@ -123,3 +123,30 @@ char *_itoa(int value, char *result, int base)
 	}
 	return (result);
 }
+
+/**
+ * _str_comment - strips the comment from a string
+ * @shell_d: shell data
+ * Return: int, len.
+ */
+int _str_comment(shell_data_t *shell_d)
+{
+	int is_quote = 0, count = 0;
+	buf tmp;
+
+	if (!shell_d)
+		return (count);
+	tmp = shell_d->input_buff;
+
+	for (count = 0; tmp[count]; count++)
+	{
+		if (tmp[count] == '"')
+			is_quote = is_quote ? 0 : 1;
+
+		if (tmp[count] == '#' && !is_quote &&
+			(tmp[count - 1] == '\0' || tmp[count - 1] == ' '))
+			tmp[count] = '\0';
+	}
+
+	return (count);
+}

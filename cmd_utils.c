@@ -17,6 +17,8 @@ int process_cmds(shell_data_t *shell_d)
 	/* iterate over each commd */
 	for (i = 0; cmd; cmd = cmd->next, i++)
 	{
+		/* carry out variable substitution on tokens arr */
+		var_substitute(shell_d, cmd->argv, cmd->argc);
 		/* logical operators or split command eg |& */
 		if ((cmd->flag == CMD_AND && ex_code != 0)
 			|| (cmd->flag == CMD_OR && ex_code == 0))
@@ -25,6 +27,7 @@ int process_cmds(shell_data_t *shell_d)
 			return (ex_code);
 		}
 		ex_code = handle_type_cmd(shell_d, cmd);
+		shell_d->exit_code = ex_code;
 		shell_d->cmd_num = shell_d->cmd_num + i;
 	}
 

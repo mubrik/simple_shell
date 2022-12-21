@@ -99,3 +99,34 @@ size_t print_aliaslist(alias_d_t *head, char *cmp)
 
 	return (count);
 }
+
+/**
+ * add_to_p_arr - store a pointer to p_arr to be free later
+ * @shell_d: shelld ata
+ * @ptr: str to cmp to, if NULl cmp wont be done
+ * Return: list size .
+ * Description: not debug only, can be used
+ */
+int add_to_p_arr(shell_data_t *shell_d, buf ptr)
+{
+	int i = 0;
+
+	if (!shell_d)
+		return (-1);
+
+	for (i = 0; i < P_AR; i++)
+	{
+		/* look for first NULL */
+		if (!shell_d->p_arr[i])
+		{
+			shell_d->p_arr[i] = ptr;
+			/* make next item NULL */
+			if ((i + 1) < P_AR)
+				shell_d->p_arr[i + 1] = NULL;
+			return (0);
+		}
+	}
+	/* no null, dont add to arry its full */
+	return (-1);
+
+}

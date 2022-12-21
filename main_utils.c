@@ -9,7 +9,7 @@
  */
 int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
 {
-	buf input_b;
+	buf input_b, *p_arr;
 
 	if (!shell_d)
 		return (-1);
@@ -17,8 +17,8 @@ int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
 	shell_d->shell_argc = argc, shell_d->shell_argv = argv;
 	/* set interactive */
 	shell_d->i_mode = isatty(STDIN_FILENO);
-	/* exit code */
-	shell_d->exit_code = 0;
+	/* exit code and pid  */
+	shell_d->exit_code = 0, shell_d->s_pid = getpid();
 	/* cmd num */
 	shell_d->cmd_num = 1;
 	/* input buffer */
@@ -30,6 +30,12 @@ int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
 	shell_d->cmd_list = NULL;
 	/* alias */
 	shell_d->alias_head = NULL;
+	/* ponters arr */
+	p_arr = malloc(sizeof(buf) * (P_AR + 1));
+	if (!p_arr)
+		return (-1);
+	/* set first item to null and assign */
+	p_arr[0] = NULL, shell_d->p_arr = p_arr;
 	return (0);
 }
 
@@ -46,9 +52,7 @@ int process_data(shell_data_t *shell_d)
 	if (result != 0 || !shell_d->cmd_list)
 		return (result);
 	/* add args list by tokenize each comand " " delim in a cmd_prop_t list */
-	result = cmd_to_args(shell_d->cmd_list);
-	/* printf("Result cmd to ar: %d \n", result); */
-	/* print_args_cmdlist(shell_d->cmd_list); */
+	result = cmd_to_args(shell_d);
 
 	return (result);
 }
@@ -86,6 +90,8 @@ int ref_shell_data(shell_data_t *shell_d)
  */
 int free_shell_data(shell_data_t *shell_d)
 {
+	int i = 0;
+
 	if (!shell_d)
 		return (0);
 	/* free input buffer */
@@ -101,6 +107,11 @@ int free_shell_data(shell_data_t *shell_d)
 	/* environmnet variables */
 	if (is_env_change(0))
 		free_lst(environ), free(environ);
+	/* free up dangling ptrs */
+	while (shell_d->p_arr[i] && i < P_AR)
+		/* if any index is NULL, rest null */
+		free(shell_d->p_arr[i]), i++;
+	free(shell_d->p_arr);
 	return (0);
 }
 
@@ -151,5 +162,3 @@ ssize_t get_input(int fd, shell_data_t *shell_d)
 	(main_buff)[total_r] = '\0';
 	return (total_r);
 }
-
-

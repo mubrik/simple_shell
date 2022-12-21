@@ -81,3 +81,45 @@ unsigned int _strspn(char *src, char *accept)
 	/* recursive base condition */
 	return (0);
 }
+
+/**
+ * _itoa - int to str
+ * @value: number
+ * @result: ptr to char
+ * @base: number base
+ * Return: ptr to char
+ * Description: C++ version 0.4 char* style "itoa":
+ * Written by Lukás Chmela
+ * Released under GPLv3.
+ */
+char *_itoa(int value, char *result, int base)
+{
+	char *ptr = NULL, *ptr1 = NULL, tmp_char;
+	int tmp_value;
+	/* check that the base if valid */
+	ptr = result, ptr1 = result;
+	if (base < 2 || base > 36)
+	{
+		*result = '\0';
+		return (result);
+	}
+
+	do {
+		tmp_value = value;
+		value /= base;
+		*ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghi\
+		jklmnopqrstuvwxyz"[35 + (tmp_value - value * base)];
+	} while (value);
+
+	/* Apply negative sign */
+	if (tmp_value < 0)
+		*ptr++ = '-';
+	*ptr-- = '\0';
+	while (ptr1 < ptr)
+	{
+		tmp_char = *ptr;
+		*ptr-- = *ptr1;
+		*ptr1++ = tmp_char;
+	}
+	return (result);
+}

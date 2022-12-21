@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -17,7 +18,11 @@
 #define P_BUFF_SIZE 1024
 /* cd path buffer */
 #define CD_B 4028
+/* p arr size */
+#define P_AR 50
 
+/** buf - a buffer of type char *  */
+typedef char *buf;
 
 /* structs and enums */
 
@@ -52,6 +57,8 @@ typedef enum ex_flag
 /**
  * struct cmd_prop - commands and properties
  * @cmd: the command, null terminated string
+ * @argv: pointer to argv arr
+ * @argc: arg count
  * @flag: the flag/type of the token
  * @next: pointer to next token
  * @prev: pointer to prev token
@@ -67,7 +74,7 @@ typedef struct cmd_prop
 } cmd_prop_t;
 
 /**
- * struct arg_list_t - list of tokenized args
+ * struct arg_list - list of tokenized args
  * @token: the token, null terminated string
  * @next: pointer to next token
  * @prev: pointer to prev token
@@ -95,26 +102,30 @@ typedef struct alias_d
 } alias_d_t;
 
 /**
- * struct shell_data_t - hold necessary shell data
+ * struct shell_data - hold necessary shell data
  * @exit_code: exit code
  * @cmd_num: the index of current command
  * @i_mode: intercative mode
+ * @s_pid: shell pid
  * @input_buff: the main inpu buffer, malloc'd
  * @cmd_list: doubly linked command cmd_prop_t list
  * @alias_head: head of doubly linked alias_d_t list
  * @shell_argc: argc of shell
  * @shell_argv: ptr argv of shell
+ * @p_arr: rray of pointers to be freed at exit
  */
 typedef struct shell_data
 {
 	int exit_code;
 	int cmd_num;
 	int i_mode;
+	pid_t s_pid;
 	char *input_buff;
 	cmd_prop_t *cmd_list;
 	alias_d_t *alias_head;
 	int shell_argc;
 	char **shell_argv;
+	buf *p_arr;
 } shell_data_t;
 
 /* This is a generic typedef for all the functions that handles bin commands */
@@ -132,10 +143,6 @@ typedef struct bin_op
 } bin_op_t;
 
 
-
-/** buf - a buffer of type char *  */
-typedef char *buf;
-
 /* env variables */
 
 extern char **environ;
@@ -148,6 +155,7 @@ int init_shell_data(int argc, char **argv, shell_data_t *shell_d);
 int process_data(shell_data_t *shell_d);
 int ref_shell_data(shell_data_t *shell_d);
 int free_shell_data(shell_data_t *shell_d);
+int add_to_p_arr(shell_data_t *shell_d, buf ptr);
 
 /* cmd _functions */
 
@@ -186,6 +194,7 @@ char *_strchr(char *str_ptr, char c);
 char *_strtok(char *str, char *delim);
 char *_strtok_r(char *str, char *delim, char **saveptr);
 unsigned int _strspn(char *src, char *accept);
+char *_itoa(int value, char *result, int base);
 
 /* cmd_list functions */
 
@@ -200,8 +209,9 @@ void free_cmdlist(cmd_prop_t *head);
 char **arg_tok(char *input_b, char *delim, int *l_size);
 arg_list_t *add_node_argl_end(arg_list_t **head, char *str);
 void free_arg_list(arg_list_t *head);
-int cmd_to_args(cmd_prop_t *cmd_list);
+int cmd_to_args(shell_data_t *shell_d);
 int print_args_cmdlist(cmd_prop_t *cmd_list);
+int var_substitute(shell_data_t *shell_d, char **argv, int argc);
 
 /* alias */
 /* would have been better with hashtable? */

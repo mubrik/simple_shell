@@ -151,7 +151,7 @@ int is_env_change(int incr);
 /* main functions */
 
 ssize_t get_input(int fd, shell_data_t *shell_d);
-int init_shell_data(int argc, char **argv, shell_data_t *shell_d);
+int init_shell_data(int argc, char **argv, int fd, shell_data_t *shell_d);
 int process_data(shell_data_t *shell_d);
 int ref_shell_data(shell_data_t *shell_d);
 int free_shell_data(shell_data_t *shell_d);

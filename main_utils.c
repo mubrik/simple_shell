@@ -4,10 +4,11 @@
  * init_shell_data - initializes shell data
  * @argc: argument count
  * @argv: array of char argument values
+ * @fd: file descriptor
  * @shell_d: pointer to shell data
  * Return: 0 if success, -1 else
  */
-int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
+int init_shell_data(int argc, char **argv, int fd, shell_data_t *shell_d)
 {
 	buf input_b, *p_arr;
 
@@ -16,7 +17,7 @@ int init_shell_data(int argc, char **argv, shell_data_t *shell_d)
 	/* set argc and argv */
 	shell_d->shell_argc = argc, shell_d->shell_argv = argv;
 	/* set interactive */
-	shell_d->i_mode = isatty(STDIN_FILENO);
+	shell_d->i_mode = isatty(fd);
 	/* exit code and pid  */
 	shell_d->exit_code = 0, shell_d->s_pid = getpid();
 	/* cmd num */

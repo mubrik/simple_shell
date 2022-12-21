@@ -144,7 +144,7 @@ int _str_comment(shell_data_t *shell_d)
 			is_quote = is_quote ? 0 : 1;
 
 		if (tmp[count] == '#' && !is_quote &&
-			(tmp[count - 1] == '\0' || tmp[count - 1] == ' '))
+			(count == 0 || tmp[count - 1] == ' '))
 			tmp[count] = '\0';
 	}
 

@@ -11,7 +11,7 @@ int process_cmds(shell_data_t *shell_d)
 	int ex_code = 0, i = 0;
 
 	if (!shell_d || !shell_d->cmd_list)
-		return (1);
+		return (0);
 	cmd = shell_d->cmd_list;
 
 	/* iterate over each commd */

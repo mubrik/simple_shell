@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 		ex_code = process_cmds(&shell_data);
 		ref_shell_data(&shell_data);
 	}
+	/* check and free mem */
 	if (shell_data.input_buff)
 		free(shell_data.input_buff);
 
